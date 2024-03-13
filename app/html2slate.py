@@ -364,6 +364,10 @@ class HTML2Slate(object):
 
     def handle_tag_span(self, node):
         rawdata = node.attrs.get("data-slate-node", None)
+
+        if not rawdata and list(node.children):
+            return self.deserialize_children(node)
+
         data = {}
         if rawdata:
             data = json.loads(rawdata)

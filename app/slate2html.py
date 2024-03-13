@@ -72,7 +72,6 @@ class Slate2HTML(object):
         # children = []
         # for child in element["children"]:
         #     children += self.serialize(child)
-        #
 
     def handle_tag_p(self, element):
         attributes = {}
