@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "block_converter"
+version = "0.1.0"
+description = "Convert HTML to Volto blocks"
+authors = ["Tiberiu Ichim <tiberiu.ichim@gmail.com>"]
+license = "MIT"
+packages = [
+    { include = "./app" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+starlite = "1.51.11"
+uvicorn = "0.18.2"
+beautifulsoup4 = "^4.11"
+lxml = "^5.1.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
