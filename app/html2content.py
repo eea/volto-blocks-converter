@@ -8,6 +8,7 @@ from .html2slate import HTML2Slate
 from .blocks import text_to_blocks
 from .utils import nanoid
 from uuid import uuid4
+import lxml.html
 
 import os
 
@@ -269,6 +270,6 @@ def convert_html_to_content(text: str):
         if field == "blocks":
             data[field] = deserialize_blocks(f)
         else:
-            data[field] = f.text or ""
+            data[field] = "".join(str(child) for child in f.children) or ""
 
     return data
