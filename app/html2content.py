@@ -1,16 +1,16 @@
-""" Convert html produced by blocks2html
-"""
+"""Convert html produced by blocks2html"""
 
 import json
+import os
+from uuid import uuid4
+
 from bs4 import BeautifulSoup
 
+from .blocks import make_uid, text_to_blocks
 from .html2slate import HTML2Slate
-from .blocks import text_to_blocks
 from .utils import nanoid
-from uuid import uuid4
-import lxml.html
 
-import os
+# import lxml.html
 
 DEBUG = os.environ.get("DEBUG", False) and "TTT----" or ""
 
@@ -223,6 +223,11 @@ def deserialize_block(fragment):
 
     # fallback to slate deserializer
     blocks = text_to_blocks(fragment)
+    if len(blocks) == 0:
+        # return a placeholder block. An empty text block renders as <div></div>
+        # so we try to overcome this
+        return [make_uid(), {"@type": "slate", "value": []}]
+
     assert len(blocks) == 1
     [uid, block] = blocks[0]
 
