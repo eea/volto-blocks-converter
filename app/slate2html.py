@@ -1,3 +1,4 @@
+import functools
 import json
 from copy import deepcopy
 
@@ -177,8 +178,16 @@ class Slate2HTML(object):
         return elements_to_text(children)
 
 
+def _tostring(s):
+    if isinstance(s, str):
+        return s
+    if isinstance(s, functools.partial) and s.args == ("br",):
+        return "<br />"
+    return tostring(s).decode("utf-8")
+
+
 def elements_to_text(children):
-    return "".join(tostring(f).decode("utf-8") for f in children)
+    return "".join(_tostring(f) for f in children)
 
 
 def slate_to_html(value):
