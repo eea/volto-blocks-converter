@@ -224,7 +224,6 @@ def text_to_blocks(text_or_element):
 
 
 def convert_slate_to_blocks(slate):
-    __import__("pdb").set_trace()
     blocks = []
     for paragraph in slate:
         maybe_block = convert_block(paragraph, parent=None)
