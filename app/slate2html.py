@@ -2,9 +2,10 @@ import functools
 import json
 from copy import deepcopy
 
-from .config import ACCEPTED_TAGS
 from lxml.html import builder as E
 from lxml.html import tostring
+
+from .config import ACCEPTED_TAGS
 
 SLATE_ACCEPTED_TAGS = ACCEPTED_TAGS + ["link"]
 

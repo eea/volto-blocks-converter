@@ -6,8 +6,8 @@ from typing import Any, Dict
 from litestar import Litestar, get, post  # Request,
 from litestar.status_codes import HTTP_200_OK
 
-from .blocks import text_to_blocks
 from .blocks2html import convert_blocks_to_html
+from .html2blocks import text_to_blocks
 from .html2content import convert_html_to_content
 from .html2slate import text_to_slate
 from .tests import run

@@ -1,4 +1,4 @@
-""" Convert HTML to slate, slate to HTML
+"""Convert HTML to slate, slate to HTML
 
 A port of volto-slate' deserialize.js module
 """

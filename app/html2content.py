@@ -6,7 +6,7 @@ from uuid import uuid4
 
 from bs4 import BeautifulSoup
 
-from .blocks import make_uid, text_to_blocks
+from .html2blocks import make_uid, text_to_blocks
 from .html2slate import HTML2Slate
 from .utils import nanoid
 

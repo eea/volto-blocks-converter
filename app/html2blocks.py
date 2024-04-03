@@ -1,15 +1,17 @@
-from .utils import nanoid
-from copy import deepcopy
-from lxml.html import document_fromstring
-from .slate2html import slate_to_html
 import json
 import logging
 from collections import deque
+from copy import deepcopy
 from uuid import uuid4
 
 from bs4 import BeautifulSoup
+from lxml.html import document_fromstring
+
+from app.config import DEFAULT_BLOCK_TYPE, VALID_TOPLEVEL_SLATE_TYPES
 
 from .html2slate import text_to_slate
+from .slate2html import slate_to_html
+from .utils import nanoid
 
 logger = logging.getLogger()
 
@@ -222,6 +224,7 @@ def text_to_blocks(text_or_element):
 
 
 def convert_slate_to_blocks(slate):
+    __import__("pdb").set_trace()
     blocks = []
     for paragraph in slate:
         maybe_block = convert_block(paragraph, parent=None)
@@ -449,4 +452,9 @@ def convert_block(slate_node, parent=None):
             if volto_block:
                 return volto_block
 
+    if slate_node.get("type") not in VALID_TOPLEVEL_SLATE_TYPES:
+        slate_node = {
+            "type": DEFAULT_BLOCK_TYPE,
+            "children": [{"text": ""}, slate_node, {"text": ""}],
+        }
     return {"@type": "slate", "value": [slate_node], "plaintext": plaintext}

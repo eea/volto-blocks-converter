@@ -1,13 +1,14 @@
-""" Convert Volto blocks to a special HTML structure that's suitable for eTranslation.
+"""Convert Volto blocks to a special HTML structure that's suitable for eTranslation.
 The main goal is to provide all block translatable text as "tag text" so that it can be processed by eTranslation.
 It should also be possible to convert this HTML back to Volto blocks, using the html2content.py module
 """
 
-from copy import deepcopy
 import json
-from lxml.html import builder as E
-from .slate2html import elements_to_text, slate_to_elements
+from copy import deepcopy
 
+from lxml.html import builder as E
+
+from .slate2html import elements_to_text, slate_to_elements
 
 TABLE_CELLS = {"header": E.TH, "data": E.TD}
 

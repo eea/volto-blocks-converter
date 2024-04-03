@@ -1,4 +1,4 @@
-""" config module """
+"""config module"""
 
 ACCEPTED_TAGS = [  # valid volto-slate elements
     "a",
@@ -135,3 +135,6 @@ BLOCK_ELEMENTS = [  # these are elements that HTML spec defines as block element
 TEXT_NODE = 3
 ELEMENT_NODE = 1
 COMMENT = 8
+
+VALID_TOPLEVEL_SLATE_TYPES = ["p", "h1",
+                              "h2", "h3", "h4", "h5", "h6", "ul", "ol"]
