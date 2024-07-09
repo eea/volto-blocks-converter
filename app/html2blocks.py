@@ -115,6 +115,14 @@ def convert_iframe(soup):
         tag.replace_with(block_tag(data, soup))
 
 
+def convert_video(soup):
+    videos = soup.find_all("video")
+
+    for tag in videos:
+        data = {"@type": "nextCloudVideo", "url": tag.attrs["src"]}
+        tag.replace_with(block_tag(data, soup))
+
+
 def convert_button(soup):
     buttons = soup.find_all("a", attrs={"class": "bluebutton"})
 
@@ -200,6 +208,7 @@ def convert_accordion(soup):
 preprocessors = [
     convert_tabs,
     convert_iframe,
+    convert_video,
     convert_accordion,
     convert_read_more,
     convert_button,
@@ -207,6 +216,8 @@ preprocessors = [
 
 
 def text_to_blocks(text_or_element):
+    import pdb
+    pdb.set_trace()
     if text_or_element and not isinstance(text_or_element, str):
         soup = text_or_element
     else:
@@ -381,9 +392,8 @@ def convert_volto_block(block, node, plaintext, parent=None):
         return table_to_table_block(node, plaintext)
 
     elif node_type == "img":
-        if (
-            block is node or plaintext == ""
-        ):  # convert to a volto block only on top level element or if the block has no text
+        # convert to a volto block only on top level element or if the block has no text
+        if (block is node or plaintext == ""):
             res = {
                 "@type": "image",
                 "url": node.get("url", "").split("/@@images", 1)[0],
