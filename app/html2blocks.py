@@ -216,8 +216,6 @@ preprocessors = [
 
 
 def text_to_blocks(text_or_element):
-    import pdb
-    pdb.set_trace()
     if text_or_element and not isinstance(text_or_element, str):
         soup = text_or_element
     else:
