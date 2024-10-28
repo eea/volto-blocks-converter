@@ -90,7 +90,8 @@ def deserialize_layout_block_with_titles(fragment):
     for column in get_elements(fragment):
         metaelement = next(column.children)
         metaelement.extract()
-        metadata = json.loads(metaelement.attrs["data-volto-column"])
+        val = metaelement.attrs["data-volto-column"]
+        metadata = json.loads(val)
         for ediv in metaelement.children:
             name = ediv.attrs["data-fieldname"]
             metadata[name] = f"{DEBUG}{ediv.text}"

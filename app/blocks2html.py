@@ -116,8 +116,7 @@ def serialize_layout_block_with_titles(block_data):
             E.DIV(coldata.pop(name, ""), **{"data-fieldname": name})
             for name in translate_fields
         ]
-        metacol = E.DIV(
-            *metatags, **{"data-volto-column": json.dumps(coldata)})
+        metacol = E.DIV(*metatags, **{"data-volto-column": json.dumps(coldata)})
 
         for _, block in iterate_blocks(colblocksdata):
             colelements.extend(convert_block_to_elements(block))
@@ -155,7 +154,7 @@ def generic_block_converter(translate_fields):
 
 
 def serialize_quote(block_data):
-    value = block_data.pop("value")
+    value = block_data.pop("value", [])
     _type = block_data.pop("@type")
     attributes = {
         "data-block-type": _type,
@@ -168,7 +167,7 @@ def serialize_quote(block_data):
 
 def generic_slate_block(fieldname):
     def convertor(block_data):
-        value = block_data.pop(fieldname)
+        value = block_data.pop(fieldname, [])
         _type = block_data.pop("@type")
         attributes = {
             "data-block-type": _type,
