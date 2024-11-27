@@ -1,7 +1,7 @@
 # import json
 import logging
 from dataclasses import dataclass
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from litestar import Litestar, get, post  # Request,
 from litestar.status_codes import HTTP_200_OK
@@ -18,6 +18,7 @@ logger = logging.getLogger()
 @dataclass
 class HtmlData:
     html: str
+    language: Optional[str]
 
 
 @dataclass
@@ -68,7 +69,8 @@ async def handle_block2html(data: Blocks) -> Dict:
 @post(path="/html2content", status_code=HTTP_200_OK)
 async def handle_html2content(data: HtmlData) -> Dict:
     html = data.html
-    data = convert_html_to_content(html)
+    language = data.language
+    data = convert_html_to_content(html, language)
 
     # logger.info("Data: \n%s", json.dumps(data, indent=2))
     return {"data": data}

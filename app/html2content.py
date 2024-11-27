@@ -2,6 +2,7 @@
 
 import json
 import os
+from typing import Optional
 from uuid import uuid4
 
 from bs4 import BeautifulSoup
@@ -21,7 +22,7 @@ def get_elements(node):
             yield child
 
 
-def deserialize_layout_block(fragment):
+def deserialize_layout_block(fragment, language):
     rawdata = fragment.attrs["data-volto-block"]
     data = json.loads(rawdata)
     data["@type"] = fragment.attrs["data-block-type"]
@@ -31,7 +32,7 @@ def deserialize_layout_block(fragment):
     for column in get_elements(fragment):
         rawcolsettings = column.attrs.get("data-volto-column-data", "{}")
         colsettings = json.loads(rawcolsettings)
-        coldata = deserialize_blocks(column)
+        coldata = deserialize_blocks(column, language)
         coldata.update(colsettings)
         coluid = str(uuid4())
         colblockdata["blocks"][coluid] = coldata
@@ -45,14 +46,14 @@ def deserialize_layout_block(fragment):
     return [uid, data]
 
 
-def deserialize_teaserGrid(fragment):
+def deserialize_teaserGrid(fragment, language):
     rawdata = fragment.attrs["data-volto-block"]
     data = json.loads(rawdata)
     data["@type"] = fragment.attrs["data-block-type"]
     columns = []
     for colel in fragment.children:
         blockel = next(colel.children)
-        block = deserialize_block(blockel)[1]
+        block = deserialize_block(blockel, language)[1]
         columns.append(block)
 
     data["columns"] = columns
@@ -61,7 +62,7 @@ def deserialize_teaserGrid(fragment):
     return [uid, data]
 
 
-def deserialize_title_block(fragment):
+def deserialize_title_block(fragment, language):
     rawdata = fragment.attrs["data-volto-block"]
     data = json.loads(rawdata)
     data["@type"] = fragment.attrs["data-block-type"]
@@ -80,7 +81,7 @@ def deserialize_title_block(fragment):
     return [uid, data]
 
 
-def deserialize_layout_block_with_titles(fragment):
+def deserialize_layout_block_with_titles(fragment, language):
     rawdata = fragment.attrs["data-volto-block"]
     data = json.loads(rawdata)
     data["@type"] = fragment.attrs["data-block-type"]
@@ -96,7 +97,7 @@ def deserialize_layout_block_with_titles(fragment):
             name = ediv.attrs["data-fieldname"]
             metadata[name] = f"{DEBUG}{ediv.text}"
 
-        coldata = deserialize_blocks(column)
+        coldata = deserialize_blocks(column, language)
         coldata.update(metadata)
         coluid = str(uuid4())
         colblockdata["blocks"][coluid] = coldata
@@ -110,16 +111,16 @@ def deserialize_layout_block_with_titles(fragment):
     return [uid, data]
 
 
-def deserialize_group_block(fragment):
+def deserialize_group_block(fragment, language):
     rawdata = fragment.attrs["data-volto-block"]
     data = json.loads(rawdata)
     data["@type"] = fragment.attrs["data-block-type"]
-    data["data"] = deserialize_blocks(fragment)
+    data["data"] = deserialize_blocks(fragment, language)
     uid = str(uuid4())
     return [uid, data]
 
 
-def deserialize_slate_table_block(fragment):
+def deserialize_slate_table_block(fragment, language):
     rawdata = fragment.attrs["data-volto-block"]
     data = json.loads(rawdata)
 
@@ -129,8 +130,11 @@ def deserialize_slate_table_block(fragment):
         row = {"cells": [], "key": nanoid()}
         data["rows"].append(row)
         for ecell in get_elements(erow):
-            cell = {"key": nanoid()}
-            cell["value"] = HTML2Slate().from_elements(ecell)
+            cell = {
+                "key": nanoid(),
+                "value": HTML2Slate().from_elements(ecell),
+                "type": None,
+            }
 
             if ecell.name == "th":
                 cell["type"] = "header"
@@ -146,7 +150,7 @@ def deserialize_slate_table_block(fragment):
 
 
 def generic_slateblock_converter(fieldname):
-    def converter(fragment):
+    def converter(fragment, language):
         rawdata = fragment.attrs["data-volto-block"]
         _type = fragment.attrs["data-block-type"]
         data = json.loads(rawdata)
@@ -165,7 +169,7 @@ def generic_slateblock_converter(fieldname):
     return converter
 
 
-def generic_block_converter(fragment):
+def generic_block_converter(fragment, language):
     rawdata = fragment.attrs["data-volto-block"]
     data = json.loads(rawdata)
     data["@type"] = fragment.attrs["data-block-type"]
@@ -175,6 +179,13 @@ def generic_block_converter(fragment):
         data[name] = f"{DEBUG}{ediv.text}"
 
     uid = str(uuid4())
+    return [uid, data]
+
+
+def deserialize_rast_block(fragment, language):
+    uid, data = generic_block_converter(fragment, language)
+    if language:
+        pass
     return [uid, data]
 
 
@@ -194,6 +205,7 @@ converters = {
     "callToActionBlock": generic_block_converter,
     "searchlib": generic_block_converter,
     "teaser": generic_block_converter,
+    "rastBlock": deserialize_rast_block,
 }
 
 
@@ -210,17 +222,17 @@ def debug_translation(node):
         node["text"] = f"{DEBUG}{node['text']}"
 
 
-def deserialize_block(fragment):
+def deserialize_block(fragment, language):
     """Convert a lxml fragment to a Volto block. This assumes that the HTML
     structure has been previously exported with block2html"""
     _type = fragment.attrs.get("data-block-type")
     if _type:
         if _type not in converters:
             print(f"Block deserializer needed: {_type}. Using default.")
-            return generic_block_converter(fragment)
+            return generic_block_converter(fragment, language)
         else:
             deserializer = converters[_type]
-            return deserializer(fragment)
+            return deserializer(fragment, language)
 
     # fallback to slate deserializer
     blocks = text_to_blocks(fragment)
@@ -239,14 +251,14 @@ def deserialize_block(fragment):
     return [uid, block]
 
 
-def deserialize_blocks(element):
+def deserialize_blocks(element, language):
     """Converts a <div> with serialized (html) blocks inside to Volto blocks"""
 
     blocks = {}
     items = []
 
     for f in get_elements(element):
-        pair = deserialize_block(f)
+        pair = deserialize_block(f, language)
         if len(pair) != 2:
             continue  # converter not created yet
         uid, block = pair
@@ -256,7 +268,7 @@ def deserialize_blocks(element):
     return {"blocks": blocks, "blocks_layout": {"items": items}}
 
 
-def convert_html_to_content(text: str):
+def convert_html_to_content(text: str, language: Optional[str]):
     data = {}
     tree = BeautifulSoup(text, "html.parser")
 
@@ -274,7 +286,7 @@ def convert_html_to_content(text: str):
             continue
 
         if field == "blocks":
-            data[field] = deserialize_blocks(f)
+            data[field] = deserialize_blocks(f, language)
         else:
             data[field] = "".join(str(child) for child in f.children) or ""
 
