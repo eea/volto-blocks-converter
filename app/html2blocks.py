@@ -197,12 +197,21 @@ def convert_accordion(soup):
         div.replace_with(block_tag(data, soup))
 
 
+def convert_html_block(soup):
+    tables = soup.find_all("table")
+
+    for table in tables:
+        data = {"@type": "html", "html": table.prettify().replace("\n", "")}
+        table.replace_with(block_tag(data, soup))
+
+
 preprocessors = [
     convert_tabs,
     convert_iframe,
     convert_accordion,
     convert_read_more,
     convert_button,
+    convert_html_block
 ]
 
 
@@ -227,6 +236,9 @@ def convert_slate_to_blocks(slate):
     blocks = []
     for paragraph in slate:
         maybe_block = convert_block(paragraph, parent=None)
+
+        if maybe_block["@type"] == "slate" and not maybe_block["plaintext"]:
+            continue
 
         if not isinstance(maybe_block, list):
             blocks.append([make_uid(), maybe_block])
@@ -381,9 +393,8 @@ def convert_volto_block(block, node, plaintext, parent=None):
         return table_to_table_block(node, plaintext)
 
     elif node_type == "img":
-        if (
-            block is node or plaintext == ""
-        ):  # convert to a volto block only on top level element or if the block has no text
+        # convert to a volto block only on top level element or if the block has no text
+        if (block is node or plaintext == ""):
             res = {
                 "@type": "image",
                 "url": node.get("url", "").split("/@@images", 1)[0],
@@ -427,6 +438,8 @@ def extract_text(slate_node):
         text = e.text_content()
         return text
     except AttributeError:
+        return ""
+    except Exception:
         return ""
 
 
