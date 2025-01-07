@@ -14,8 +14,22 @@ TABLE_CELLS = {"header": E.TH, "data": E.TD}
 
 
 def serialize_slate(block_data):
+    data = deepcopy(block_data)
+    _type = data.pop("@type")
+    data.pop('value', None)
+    data.pop('plaintext', '')
+
+    attributes = {
+        "data-block-type": _type,
+        "data-volto-block": json.dumps(data),
+    }
+
     if "value" in block_data:
-        return slate_to_elements(block_data["value"])
+        elements = slate_to_elements(block_data["value"])
+        if data:
+            for el in elements:
+                el.attrib.update(attributes)
+        return elements
     else:
         return E.P()
 
@@ -116,7 +130,8 @@ def serialize_layout_block_with_titles(block_data):
             E.DIV(coldata.pop(name, ""), **{"data-fieldname": name})
             for name in translate_fields
         ]
-        metacol = E.DIV(*metatags, **{"data-volto-column": json.dumps(coldata)})
+        metacol = E.DIV(
+            *metatags, **{"data-volto-column": json.dumps(coldata)})
 
         for _, block in iterate_blocks(colblocksdata):
             colelements.extend(convert_block_to_elements(block))

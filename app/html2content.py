@@ -178,9 +178,32 @@ def generic_block_converter(fragment):
     return [uid, data]
 
 
+def deserialize_slate_block(fragment):
+    blocks = text_to_blocks(fragment)
+    if len(blocks) == 0:
+        # return a placeholder block. An empty text block renders as <div></div>
+        # so we try to overcome this
+        return [make_uid(), {"@type": "slate", "value": []}]
+
+    assert len(blocks) == 1
+    [uid, block] = blocks[0]
+
+    if block.get("@type") == "slate":
+        slate_value = block["value"]
+        visit_slate_nodes(slate_value, debug_translation)
+
+        rawdata = fragment.attrs.get("data-volto-block", None)
+        if rawdata:
+            data = json.loads(rawdata)
+            block.update(data)
+
+    return [uid, block]
+
+
 converters = {
     "columnsBlock": deserialize_layout_block,
     "tabs_block": deserialize_layout_block_with_titles,
+    "slate": deserialize_slate_block,
     # "quote": deserialize_quote_block,
     "quote": generic_slateblock_converter("value"),
     "item": generic_slateblock_converter("description"),
@@ -223,20 +246,7 @@ def deserialize_block(fragment):
             return deserializer(fragment)
 
     # fallback to slate deserializer
-    blocks = text_to_blocks(fragment)
-    if len(blocks) == 0:
-        # return a placeholder block. An empty text block renders as <div></div>
-        # so we try to overcome this
-        return [make_uid(), {"@type": "slate", "value": []}]
-
-    assert len(blocks) == 1
-    [uid, block] = blocks[0]
-
-    if block.get("@type") == "slate":
-        slate_value = block["value"]
-        visit_slate_nodes(slate_value, debug_translation)
-
-    return [uid, block]
+    return deserialize_slate_block(fragment)
 
 
 def deserialize_blocks(element):

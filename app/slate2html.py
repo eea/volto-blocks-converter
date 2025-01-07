@@ -48,7 +48,13 @@ class Slate2HTML(object):
                 [inline_text_element(t, element)
                     for t in element["text"].split("\n")],)
 
+        if "type" not in element:
+            element['type'] = 'p'
         tagname = element["type"]
+
+        # try:
+        # except:
+        #     import pdb; pdb.set_trace()
 
         if element.get("data") and element["type"] not in SLATE_ACCEPTED_TAGS:
             handler = self.handle_slate_data_element
@@ -85,9 +91,10 @@ class Slate2HTML(object):
             attributes = {"data-slate-data": json.dumps(data)}
 
         _type = element["type"].upper()
-        style = element.get("styleName")
-        if style == "text-center":
-            attributes.update({"style": "text-align: center;"})
+
+        # style = element.get("styleName")
+        # if style == "text-center":
+            # attributes.update({"style": "text-align: center;"})
 
         el = getattr(E, _type)
         children = []

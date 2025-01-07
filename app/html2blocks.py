@@ -418,6 +418,8 @@ def convert_volto_block(block, node, plaintext, parent=None):
 
 
 def extract_text(slate_node):
+    """ Extract plaintext from a slate node by converting to HTML and using lxml
+    """
     html = slate_to_html([slate_node])
     if not (html and html.strip()):
         return ""
