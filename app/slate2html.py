@@ -77,7 +77,9 @@ class Slate2HTML(object):
     def handle_tag_p(self, element):
         data = deepcopy(element)
         data.pop('children', None)
-        attributes = {"data-slate-data": json.dumps(data)}
+        data.pop('type', None)
+        if data:
+            attributes = {"data-slate-data": json.dumps(data)}
 
         _type = element["type"].upper()
         style = element.get("styleName")
