@@ -75,9 +75,12 @@ class Slate2HTML(object):
         #     children += self.serialize(child)
 
     def handle_tag_p(self, element):
+        attributes = {}
+
         data = deepcopy(element)
         data.pop('children', None)
         data.pop('type', None)
+
         if data:
             attributes = {"data-slate-data": json.dumps(data)}
 
