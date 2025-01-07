@@ -1,0 +1,2 @@
+start:
+	./docker-entrypoint.sh
