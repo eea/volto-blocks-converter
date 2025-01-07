@@ -392,8 +392,8 @@ def convert_volto_block(block, node, plaintext, parent=None):
                 "alt": node.get("alt", ""),
             }
 
-            if isinstance(parent, list):
-                __import__("pdb").set_trace()
+            # if isinstance(parent, list):
+            #     __import__("pdb").set_trace()
             if parent and parent.get("type") == "link":
                 href = parent.get("data", {}).get("url", "")
                 if href.startswith("resolveuid"):
