@@ -5,6 +5,8 @@ import os
 from uuid import uuid4
 
 from bs4 import BeautifulSoup
+from bs4.element import Tag
+
 
 from .html2blocks import make_uid, text_to_blocks
 from .html2slate import HTML2Slate
@@ -67,6 +69,8 @@ def deserialize_title_block(fragment):
     data["@type"] = fragment.attrs["data-block-type"]
 
     for ediv in fragment.children:
+        if not isinstance(ediv, Tag):
+            continue
         name = ediv.attrs["data-fieldname"]
         if name != "info":
             data[name] = f"{DEBUG}{ediv.text}"
@@ -171,6 +175,9 @@ def generic_block_converter(fragment):
     data["@type"] = fragment.attrs["data-block-type"]
 
     for ediv in fragment.children:
+        if not isinstance(ediv, Tag):
+            continue
+
         name = ediv.attrs["data-fieldname"]
         data[name] = f"{DEBUG}{ediv.text}"
 
@@ -203,6 +210,7 @@ def deserialize_slate_block(fragment):
 converters = {
     "columnsBlock": deserialize_layout_block,
     "tabs_block": deserialize_layout_block_with_titles,
+    "accordion": deserialize_layout_block_with_titles,
     "slate": deserialize_slate_block,
     # "quote": deserialize_quote_block,
     "quote": generic_slateblock_converter("value"),
