@@ -25,14 +25,17 @@ def test_it(json_payload):
     data = Blocks(**json_payload)
     html = convert_blocks_to_html(data)
 
-    with open('tests/out.html', 'w') as f:
-        f.write(html)
+    # with open('tests/out.html', 'w') as f:
+    #     f.write(html)
 
     assert """<p data-slate-data='{"styleName": "text-justify"}'""" in html
 
     dump = HTML_TPL % html
     content = convert_html_to_content(dump)
-    with open('tests/out.json', 'w') as f:
-        json.dump(content, f)
+
+    assert content
+
+    # with open('tests/out.json', 'w') as f:
+    #     json.dump(content, f)
 
     # assert json_payload == content['blocks']

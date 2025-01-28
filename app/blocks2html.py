@@ -286,6 +286,7 @@ converters = {
     "image": serialize_image,
     "columnsBlock": serialize_layout_block,
     "tabs_block": serialize_layout_block_with_titles,
+    "accordion": serialize_layout_block_with_titles,
     "group": serialize_group_block,
     "teaserGrid": serialize_teaserGrid,
     # "quote": serialize_quote,
