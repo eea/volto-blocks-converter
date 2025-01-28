@@ -186,6 +186,7 @@ def generic_block_converter(fragment):
 
 
 def deserialize_slate_block(fragment):
+    # __import__("pdb").set_trace()
     blocks = text_to_blocks(fragment)
     if len(blocks) == 0:
         # return a placeholder block. An empty text block renders as <div></div>

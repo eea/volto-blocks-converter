@@ -136,5 +136,15 @@ TEXT_NODE = 3
 ELEMENT_NODE = 1
 COMMENT = 8
 
-VALID_TOPLEVEL_SLATE_TYPES = ["p", "h1",
-                              "h2", "h3", "h4", "h5", "h6", "ul", "ol"]
+VALID_TOPLEVEL_SLATE_TYPES = [
+    "p",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6",
+    "ul",
+    "ol",
+    "callout",
+]

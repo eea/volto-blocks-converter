@@ -166,8 +166,7 @@ def remove_element_edges(text, node):
         text = FIRST_ALL_SPACE.sub("", text)
 
     if ANY_SPACE_AT_END.search(text):
-        has_inline_ancestor_sibling = get_inline_ancestor_sibling(
-            node) is not None
+        has_inline_ancestor_sibling = get_inline_ancestor_sibling(node) is not None
         if not has_inline_ancestor_sibling or (next_ and next_.name == "br"):
             text = ANY_SPACE_AT_END.sub("", text)
 
@@ -321,6 +320,8 @@ class HTML2Slate(object):
 
         if "data-slate-data" in node.attrs:
             handler = self.handle_slate_data_element
+        elif "data-slate-node" in node.attrs:
+            handler = self.handle_slate_node_element
         else:
             handler = getattr(self, "handle_tag_{}".format(tagname), None)
             if not handler and tagname in ACCEPTED_TAGS:
@@ -456,8 +457,7 @@ class HTML2Slate(object):
         return self.handle_block(node)
 
     def handle_block(self, node):
-        value = {"type": node.name,
-                 "children": self.deserialize_children(node)}
+        value = {"type": node.name, "children": self.deserialize_children(node)}
         for k, v in node.attrs.items():
             k = fix_node_attributes(k)
             value[k] = v
@@ -465,6 +465,13 @@ class HTML2Slate(object):
 
     def handle_slate_data_element(self, node):
         data = node["data-slate-data"]
+        element = json.loads(data)
+        element["children"] = self.deserialize_children(node)
+        return element
+
+    def handle_slate_node_element(self, node):
+        # __import__("pdb").set_trace()
+        data = node["data-slate-node"]
         element = json.loads(data)
         element["children"] = self.deserialize_children(node)
         return element

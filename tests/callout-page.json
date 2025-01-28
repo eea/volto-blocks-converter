@@ -1,0 +1,49 @@
+{
+  "blocks": {
+    "7d0cab8b-ad1a-4407-b256-4885b6fc0c41": {
+      "@type": "layoutSettings",
+      "layout_size": "narrow_view",
+      "block": "68a8d56f-4bf4-49a1-a2dd-1b1f803822a5",
+      "@layout": "1ce4a399-c56d-48d3-a9b3-57c0fbd9c2e8"
+    },
+    "26842bd2-eb2b-4f50-947b-9e07682543f4": {
+      "styles": {},
+      "@type": "title",
+      "copyrightIcon": "ri-copyright-line",
+      "block": "26842bd2-eb2b-4f50-947b-9e07682543f4",
+      "@layout": "3db576de-81f7-4d0c-a0c2-385d29d4befb"
+    },
+    "3d97c428-088e-478c-8698-e828eca0520a": {
+      "plaintext": " some link ",
+      "@layout": "06d85ff8-1133-4c0c-a1d9-e8141efe08d0",
+      "value": [
+        {
+          "type": "callout",
+          "children": [
+            {
+              "text": ""
+            },
+            {
+              "type": "link",
+              "data": {
+                "url": "https://example.com"
+              },
+              "children": [
+                {
+                  "text": "some link"
+                }
+              ]
+            },
+            {
+              "text": ""
+            }
+          ]
+        }
+      ],
+      "@type": "slate"
+    }
+  },
+  "blocks_layout": {
+    "items": ["3d97c428-088e-478c-8698-e828eca0520a"]
+  }
+}
