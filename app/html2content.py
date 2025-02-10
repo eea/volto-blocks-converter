@@ -149,6 +149,23 @@ def deserialize_slate_table_block(fragment):
     return [str(uuid4()), block]
 
 
+def deserialize_statistic_block(fragment):
+    rawdata = fragment.attrs["data-volto-block"]
+    data = json.loads(rawdata)
+    data["@type"] = "statistic_block"
+    data[items] = []
+
+    for eitem in fragment.children:
+        rawitemdata = eitem.attrs["volto-data-item"]
+        itemdata = json.loads(rawitemdata)
+        for div in eitem:
+            fieldname = div.attrs["fieldname"]
+            itemdata[fieldname] = HTML2Slate().from_elements(div.children)
+        data["items"].append(itemdata)
+
+    return [str(uuid4()), data]
+
+
 def generic_slateblock_converter(fieldname):
     def converter(fragment):
         rawdata = fragment.attrs["data-volto-block"]
@@ -217,6 +234,7 @@ converters = {
     "quote": generic_slateblock_converter("value"),
     "item": generic_slateblock_converter("description"),
     "slateTable": deserialize_slate_table_block,
+    "statistic_block": deserialize_statistic_block,
     "group": deserialize_group_block,
     "teaserGrid": deserialize_teaserGrid,
     # generics
@@ -226,6 +244,7 @@ converters = {
     "callToActionBlock": generic_block_converter,
     "searchlib": generic_block_converter,
     "teaser": generic_block_converter,
+    "listing": generic_block_converter,
 }
 
 

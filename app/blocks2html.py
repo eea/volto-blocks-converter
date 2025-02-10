@@ -57,6 +57,27 @@ def serialize_slate_table(block_data):
     return [ediv]
 
 
+def serialize_statistics_block(block_data):
+    _type = block_data.pop("@type")
+    items = block_data.pop("items", [])
+    attributes = {
+        "data-block-type": _type,
+        "data-volto-block": json.dumps(block_data),
+    }
+    children = []
+    for item in items:
+        label = item.pop("label", [])
+        value = item.pop("value", [])
+
+        labeldiv = E.DIV(*slate_to_elements(label), {"fieldname": "label"})
+        valuediv = E.DIV(*slate_to_elements(value), {"fieldname": "value"})
+
+        itemdiv = E.DIV(labeldiv, valuediv, {"volto-data-item": json.dumps(item)})
+        children.append(itemdiv)
+    ediv = E.DIV(*children, **attributes)
+    return [ediv]
+
+
 def iterate_blocks(data):
     uids = data["blocks_layout"]["items"]
     blocks = data["blocks"]
@@ -298,6 +319,7 @@ converters = {
     "callToActionBlock": generic_block_converter(["text"]),
     "searchlib": generic_block_converter(["searchInputPlaceholder"]),
     "teaser": serialize_teaser,
+    "statistic_block": serialize_statistics_block,
     # TODO: need to handle call to actions for teasers
     # teaserGrid
 }
