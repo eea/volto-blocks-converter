@@ -16,8 +16,8 @@ TABLE_CELLS = {"header": E.TH, "data": E.TD}
 def serialize_slate(block_data):
     data = deepcopy(block_data)
     _type = data.pop("@type")
-    data.pop('value', None)
-    data.pop('plaintext', '')
+    data.pop("value", None)
+    data.pop("plaintext", "")
 
     attributes = {
         "data-block-type": _type,
@@ -130,8 +130,7 @@ def serialize_layout_block_with_titles(block_data):
             E.DIV(coldata.pop(name, ""), **{"data-fieldname": name})
             for name in translate_fields
         ]
-        metacol = E.DIV(
-            *metatags, **{"data-volto-column": json.dumps(coldata)})
+        metacol = E.DIV(*metatags, **{"data-volto-column": json.dumps(coldata)})
 
         for _, block in iterate_blocks(colblocksdata):
             colelements.extend(convert_block_to_elements(block))
@@ -293,6 +292,7 @@ converters = {
     "quote": generic_slate_block("value"),
     "item": generic_slate_block("description"),
     # generics
+    "listing": generic_block_converter(["headline"]),
     "nextCloudVideo": generic_block_converter(["title"]),
     "layoutSettings": generic_block_converter([]),
     "callToActionBlock": generic_block_converter(["text"]),
