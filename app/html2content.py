@@ -153,7 +153,7 @@ def deserialize_statistic_block(fragment):
     rawdata = fragment.attrs["data-volto-block"]
     data = json.loads(rawdata)
     data["@type"] = "statistic_block"
-    data[items] = []
+    data["items"] = []
 
     for eitem in fragment.children:
         rawitemdata = eitem.attrs["volto-data-item"]

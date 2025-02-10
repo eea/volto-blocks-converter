@@ -74,6 +74,7 @@ def serialize_statistics_block(block_data):
 
         itemdiv = E.DIV(labeldiv, valuediv, {"volto-data-item": json.dumps(item)})
         children.append(itemdiv)
+
     ediv = E.DIV(*children, **attributes)
     return [ediv]
 
