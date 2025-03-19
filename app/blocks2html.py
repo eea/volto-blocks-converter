@@ -345,7 +345,10 @@ def convert_blocks_to_html(data):
     fragments = []
 
     for uid in order:
-        block = blocks[uid]
+        block = blocks.get(uid, None)
+        if block is None:
+            logger.warn("Unable to find block %s - %r", uid, blocks)
+            continue
         elements = convert_block_to_elements(block)
         if elements:
             html = elements_to_text(elements)
