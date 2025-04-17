@@ -1,0 +1,70 @@
+{
+  "@type": "teaserGrid",
+  "columns": [
+    {
+      "@type": "teaser",
+      "head_title": "Check the European Climate Adaptation Newsletter and register to receive it in your e-mail:",
+      "href": [
+        {
+          "@id": "https://subscriptions.eea.europa.eu/newsletter-subscription-climate-adapt",
+          "title": "subscriptions.eea.europa.eu/newsletter-subscription-climate-adapt"
+        }
+      ],
+      "id": "536376b7-8717-4b56-9239-9f1b1cde51f3",
+      "image_scales": {
+        "image": [
+          {
+            "content-type": "image/svg+xml",
+            "download": "@@images/image-24-31185c4d9478fa60b7547df08788785c.svg",
+            "filename": "newsletter.svg",
+            "height": 24,
+            "scales": {
+              "tiny": {
+                "download": "@@images/image-24-31185c4d9478fa60b7547df08788785c.svg",
+                "height": 24,
+                "width": 24
+              }
+            },
+            "size": 326,
+            "width": 24
+          }
+        ]
+      },
+      "itemModel": {
+        "@type": "card",
+        "callToAction": {
+          "enable": true,
+          "href": [
+            {
+              "@id": "https://subscriptions.eea.europa.eu/newsletter-subscription-climate-adapt",
+              "title": "subscriptions.eea.europa.eu/newsletter-subscription-climate-adapt"
+            }
+          ],
+          "label": "Sign me up"
+        },
+        "hasDate": false,
+        "hasDescription": true,
+        "hasEventDate": false,
+        "hasLink": true,
+        "maxDescription": "4",
+        "maxTitle": "2",
+        "styles": {
+          "inverted:bool": false,
+          "objectFit": "scale-down",
+          "rounded:bool": false,
+          "text": "center"
+        },
+        "titleOnImage": true
+      },
+      "overwrite": true,
+      "preview_image": "http://localhost:3000/en/observatory/newsletter.svg",
+      "styles": {
+        "align": "center"
+      },
+      "title": "Newsletter"
+    }
+  ],
+  "styles": {
+    "customClass": "cta-to-right"
+  }
+}
