@@ -12,6 +12,8 @@ from .slate2html import elements_to_text, slate_to_elements
 # import lxml.etree
 
 TABLE_CELLS = {"header": E.TH, "data": E.TD}
+TEASER_FIELDS = ["title", "head_title", "description"]
+CALLTOACTION_FIELDS = ["label"]
 
 
 def serialize_slate(block_data):
@@ -260,7 +262,28 @@ def serialize_teaserGrid(block_data):
     return [div]
 
 
-TEASER_FIELDS = ["title", "head_title", "description"]
+def serialize_itemModel(item_model):
+    model_type = item_model.pop("@type")
+    callToAction = item_model.pop("callToAction", None)
+    model_children = []
+
+    if callToAction:
+        children = []
+        for fname in CALLTOACTION_FIELDS:
+            fv = callToAction.pop("label", "")
+            if fv is not None:
+                children.append(E.DIV(fv, **{"data-fieldname": fname}))
+
+        callAttributes = {"data-volto-calltoaction": json.dumps(callToAction)}
+        call_div = E.DIV(*children, **callAttributes)
+        model_children.append(call_div)
+
+    model_attributes = {
+        "data-model-type": model_type,
+        "data-volto-block": json.dumps(item_model),
+    }
+    model_div = E.DIV(*model_children, **model_attributes)
+    return model_div
 
 
 def serialize_teaser(block_data):
@@ -282,30 +305,12 @@ def serialize_teaser(block_data):
     ]
     item_model = block_data.pop("itemModel", None)
     if item_model:
-        model_type = item_model.pop("@type")
-        callToAction = item_model.pop("callToAction", None)
-        model_children = []
-        if callToAction:
-            label = callToAction.pop("label", "")
-            callAttributes = {
-                "data-volto-calltoaction": json.dumps(callToAction)}
-            call_div = E.DIV(label, **callAttributes)
-            model_children.append(call_div)
-        model_attributes = {
-            "data-block-type": model_type,
-            "data-volto-block": json.dumps(item_model),
-        }
-        model_div = E.DIV(*model_children, **model_attributes)
+        model_div = serialize_itemModel(item_model)
         children.append(model_div)
 
     div = E.DIV(*children, **attributes)
     # print(lxml.etree.tostring(div).decode("utf-8"))
     return [div]
-
-    # TODO: handle the itemModel
-    # serialized_model = generic_block_converter()
-    __import__("pdb").set_trace()
-    return serialized
 
 
 def serialize_title_block(block_data):
@@ -336,10 +341,6 @@ def serialize_title_block(block_data):
     return [div]
 
 
-def serialize_item_model_card(data):
-    pass
-
-
 converters = {
     "slate": serialize_slate,
     "slateTable": serialize_slate_table,
@@ -363,7 +364,7 @@ converters = {
     # teaserGrid and teasers support (including the card)
     "teaserGrid": serialize_teaserGrid,
     "teaser": serialize_teaser,
-    "card": serialize_item_model_card,
+    # "card": serialize_item_model_card,
 }
 
 

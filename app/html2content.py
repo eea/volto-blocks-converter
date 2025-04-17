@@ -202,6 +202,40 @@ def generic_block_converter(fragment):
     return [uid, data]
 
 
+def deserialize_itemModel(fragment):
+    data = {"@type": fragment.attrs["data-model-type"]}
+    data.update(json.loads(fragment.attrs["data-volto-block"]))
+
+    for ediv in fragment.children:
+        if "data-volto-calltoaction" in ediv.attrs:
+            callToAction = json.loads(ediv.attrs["data-volto-calltoaction"])
+            for ecdiv in ediv.children:
+                fname = ecdiv.attrs["data-fieldname"]
+                callToAction[fname] = f"{DEBUG}{ecdiv.text}"
+
+    return data
+
+
+def deserialize_teaser(fragment):
+    rawdata = fragment.attrs["data-volto-block"]
+    data = json.loads(rawdata)
+    data["@type"] = fragment.attrs["data-block-type"]
+
+    for ediv in fragment.children:
+        if not isinstance(ediv, Tag):
+            continue
+
+        if "data-model-type" in ediv.attrs:
+            model_info = deserialize_itemModel(ediv)
+            data["itemModel"] = model_info
+
+        name = ediv.attrs["data-fieldname"]
+        data[name] = f"{DEBUG}{ediv.text}"
+
+    uid = str(uuid4())
+    return [uid, data]
+
+
 def deserialize_slate_block(fragment):
     # __import__("pdb").set_trace()
     blocks = text_to_blocks(fragment)
@@ -236,15 +270,16 @@ converters = {
     "slateTable": deserialize_slate_table_block,
     "statistic_block": deserialize_statistic_block,
     "group": deserialize_group_block,
-    "teaserGrid": deserialize_teaserGrid,
     # generics
     "nextCloudVideo": generic_block_converter,
     "title": deserialize_title_block,
     "layoutSettings": generic_block_converter,
     "callToActionBlock": generic_block_converter,
     "searchlib": generic_block_converter,
-    "teaser": generic_block_converter,
     "listing": generic_block_converter,
+    # teaserGrid, teaser and cards are connected
+    "teaserGrid": deserialize_teaserGrid,
+    "teaser": deserialize_teaser,
 }
 
 

@@ -3,3 +3,5 @@ lxml==5.1.0
 litestar==2.5.4
 pytest
 requests
+bs4
+-e .
