@@ -4,9 +4,7 @@ version = "0.1.0"
 description = "Convert HTML to Volto blocks"
 authors = ["Tiberiu Ichim <tiberiu.ichim@gmail.com>"]
 license = "MIT"
-packages = [
-    { include = "./app" }
-]
+packages = [{ include = "./app" }]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -20,3 +18,6 @@ lxml = "^5.1.0"
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pyright]
+typeCheckingMode = "standard"
