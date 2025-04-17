@@ -212,6 +212,7 @@ def deserialize_itemModel(fragment):
             for ecdiv in ediv.children:
                 fname = ecdiv.attrs["data-fieldname"]
                 callToAction[fname] = f"{DEBUG}{ecdiv.text}"
+            data["callToAction"] = callToAction
 
     return data
 
@@ -228,6 +229,7 @@ def deserialize_teaser(fragment):
         if "data-model-type" in ediv.attrs:
             model_info = deserialize_itemModel(ediv)
             data["itemModel"] = model_info
+            continue
 
         name = ediv.attrs["data-fieldname"]
         data[name] = f"{DEBUG}{ediv.text}"

@@ -9,7 +9,7 @@ from app.main import Blocks
 
 @pytest.fixture
 def json_payload():
-    with open("tests/data/callout-page.json") as f:
+    with open("tests/fixtures/callout-page.json") as f:
         payload = json.load(f)
     return payload
 

@@ -289,20 +289,18 @@ def serialize_itemModel(item_model):
 def serialize_teaser(block_data):
     # serialized = generic_block_converter(TEASER_FIELDS)(block_data)
     _type = block_data.pop("@type")
-    fv = {}
+    children = []
     for name in TEASER_FIELDS:
         value = block_data.pop(name, None)
         if value is not None:
-            fv[name] = value
+            cdiv = E.DIV(value, **{"data-fieldname": name})
+            children.append(cdiv)
 
     attributes = {
         "data-block-type": _type,
         "data-volto-block": json.dumps(block_data),
     }
 
-    children = [
-        E.DIV(fv.get(name, ""), **{"data-fieldname": name}) for name in TEASER_FIELDS
-    ]
     item_model = block_data.pop("itemModel", None)
     if item_model:
         model_div = serialize_itemModel(item_model)

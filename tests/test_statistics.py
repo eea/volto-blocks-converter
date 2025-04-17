@@ -11,14 +11,14 @@ from app.html2content import deserialize_statistic_block
 
 @pytest.fixture
 def json_payload():
-    with open("tests/data/statistic_block.json") as f:
+    with open("tests/fixtures/statistic_block.json") as f:
         payload = json.load(f)
     return payload
 
 
 @pytest.fixture
 def html_payload():
-    with open("tests/data/statistic_block.html") as f:
+    with open("tests/fixtures/statistic_block.html") as f:
         payload = f.read()
     return payload
 
