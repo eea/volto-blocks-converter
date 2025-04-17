@@ -9,8 +9,11 @@ from copy import deepcopy
 from lxml.html import builder as E
 
 from .slate2html import elements_to_text, slate_to_elements
+# import lxml.etree
 
 TABLE_CELLS = {"header": E.TH, "data": E.TD}
+TEASER_FIELDS = ["title", "head_title", "description"]
+CALLTOACTION_FIELDS = ["label"]
 
 
 def serialize_slate(block_data):
@@ -72,7 +75,8 @@ def serialize_statistics_block(block_data):
         labeldiv = E.DIV(*slate_to_elements(label), {"fieldname": "label"})
         valuediv = E.DIV(*slate_to_elements(value), {"fieldname": "value"})
 
-        itemdiv = E.DIV(labeldiv, valuediv, {"volto-data-item": json.dumps(item)})
+        itemdiv = E.DIV(labeldiv, valuediv, {
+                        "volto-data-item": json.dumps(item)})
         children.append(itemdiv)
 
     ediv = E.DIV(*children, **attributes)
@@ -152,7 +156,8 @@ def serialize_layout_block_with_titles(block_data):
             E.DIV(coldata.pop(name, ""), **{"data-fieldname": name})
             for name in translate_fields
         ]
-        metacol = E.DIV(*metatags, **{"data-volto-column": json.dumps(coldata)})
+        metacol = E.DIV(
+            *metatags, **{"data-volto-column": json.dumps(coldata)})
 
         for _, block in iterate_blocks(colblocksdata):
             colelements.extend(convert_block_to_elements(block))
@@ -257,18 +262,53 @@ def serialize_teaserGrid(block_data):
     return [div]
 
 
-TEASER_FIELDS = ["title", "head_title", "description"]
+def serialize_itemModel(item_model):
+    model_type = item_model.pop("@type")
+    callToAction = item_model.pop("callToAction", None)
+    model_children = []
+
+    if callToAction:
+        children = []
+        for fname in CALLTOACTION_FIELDS:
+            fv = callToAction.pop("label", "")
+            if fv is not None:
+                children.append(E.DIV(fv, **{"data-fieldname": fname}))
+
+        callAttributes = {"data-volto-calltoaction": json.dumps(callToAction)}
+        call_div = E.DIV(*children, **callAttributes)
+        model_children.append(call_div)
+
+    model_attributes = {
+        "data-model-type": model_type,
+        "data-volto-block": json.dumps(item_model),
+    }
+    model_div = E.DIV(*model_children, **model_attributes)
+    return model_div
 
 
 def serialize_teaser(block_data):
-    serialized = generic_block_converter(TEASER_FIELDS)(block_data)
+    # serialized = generic_block_converter(TEASER_FIELDS)(block_data)
+    _type = block_data.pop("@type")
+    children = []
+    for name in TEASER_FIELDS:
+        value = block_data.pop(name, None)
+        if value is not None:
+            cdiv = E.DIV(value, **{"data-fieldname": name})
+            children.append(cdiv)
 
-    # item_model = block_data.pop('itemModel', None)
-    # if item_model:
-    #     serialized_model = generic_block_converter()
-    # TODO: handle the itemModel
-    # __import__("pdb").set_trace()
-    return serialized
+    attributes = {
+        "data-block-type": _type,
+        "data-volto-block": json.dumps(block_data),
+    }
+
+    item_model = block_data.pop("itemModel", None)
+    if item_model:
+        model_div = serialize_itemModel(item_model)
+        children.append(model_div)
+
+    div = E.DIV(*children, **attributes)
+    # print(lxml.etree.tostring(div).decode("utf-8"))
+    return [div]
 
 
 def serialize_title_block(block_data):
@@ -309,7 +349,6 @@ converters = {
     "tabs_block": serialize_layout_block_with_titles,
     "accordion": serialize_layout_block_with_titles,
     "group": serialize_group_block,
-    "teaserGrid": serialize_teaserGrid,
     # "quote": serialize_quote,
     "quote": generic_slate_block("value"),
     "item": generic_slate_block("description"),
@@ -319,10 +358,11 @@ converters = {
     "layoutSettings": generic_block_converter([]),
     "callToActionBlock": generic_block_converter(["text"]),
     "searchlib": generic_block_converter(["searchInputPlaceholder"]),
-    "teaser": serialize_teaser,
     "statistic_block": serialize_statistics_block,
-    # TODO: need to handle call to actions for teasers
-    # teaserGrid
+    # teaserGrid and teasers support (including the card)
+    "teaserGrid": serialize_teaserGrid,
+    "teaser": serialize_teaser,
+    # "card": serialize_item_model_card,
 }
 
 
