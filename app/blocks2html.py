@@ -4,12 +4,14 @@ It should also be possible to convert this HTML back to Volto blocks, using the 
 """
 
 import json
+import logging
 from copy import deepcopy
 
 from lxml.html import builder as E
 
 from .slate2html import elements_to_text, slate_to_elements
-# import lxml.etree
+
+logger = logging.getLogger()
 
 TABLE_CELLS = {"header": E.TH, "data": E.TD}
 TEASER_FIELDS = ["title", "head_title", "description"]
@@ -75,8 +77,7 @@ def serialize_statistics_block(block_data):
         labeldiv = E.DIV(*slate_to_elements(label), {"fieldname": "label"})
         valuediv = E.DIV(*slate_to_elements(value), {"fieldname": "value"})
 
-        itemdiv = E.DIV(labeldiv, valuediv, {
-                        "volto-data-item": json.dumps(item)})
+        itemdiv = E.DIV(labeldiv, valuediv, {"volto-data-item": json.dumps(item)})
         children.append(itemdiv)
 
     ediv = E.DIV(*children, **attributes)
@@ -156,8 +157,7 @@ def serialize_layout_block_with_titles(block_data):
             E.DIV(coldata.pop(name, ""), **{"data-fieldname": name})
             for name in translate_fields
         ]
-        metacol = E.DIV(
-            *metatags, **{"data-volto-column": json.dumps(coldata)})
+        metacol = E.DIV(*metatags, **{"data-volto-column": json.dumps(coldata)})
 
         for _, block in iterate_blocks(colblocksdata):
             colelements.extend(convert_block_to_elements(block))
@@ -387,7 +387,7 @@ def convert_blocks_to_html(data):
     for uid in order:
         block = blocks.get(uid, None)
         if block is None:
-            logger.warn("Unable to find block %s - %r", uid, blocks)
+            logger.warning("Unable to find block %s - %r", uid, blocks)
             continue
         elements = convert_block_to_elements(block)
         if elements:
