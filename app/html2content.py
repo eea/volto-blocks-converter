@@ -1,16 +1,18 @@
 """Convert html produced by blocks2html"""
 
 import json
+import logging
 import os
 from uuid import uuid4
 
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 
-
 from .html2blocks import make_uid, text_to_blocks
 from .html2slate import HTML2Slate
 from .utils import nanoid
+
+logger = logging.getLogger(__name__)
 
 # import lxml.html
 
@@ -239,13 +241,19 @@ def deserialize_teaser(fragment):
 
 
 def deserialize_slate_block(fragment):
-    # __import__("pdb").set_trace()
     blocks = text_to_blocks(fragment)
     if len(blocks) == 0:
         # return a placeholder block. An empty text block renders as <div></div>
         # so we try to overcome this
         return [make_uid(), {"@type": "slate", "value": []}]
 
+    if len(blocks) != 1:
+        logger.warning(
+            "Fragment yielded more then one slate block: %s ===> %r  ",
+            str(fragment),
+            blocks,
+        )
+        pass
     assert len(blocks) == 1
     [uid, block] = blocks[0]
 
