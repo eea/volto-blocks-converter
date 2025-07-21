@@ -242,6 +242,7 @@ def deserialize_teaser(fragment):
 
 def deserialize_slate_block(fragment):
     blocks = text_to_blocks(fragment)
+
     if len(blocks) == 0:
         # return a placeholder block. An empty text block renders as <div></div>
         # so we try to overcome this
@@ -253,20 +254,40 @@ def deserialize_slate_block(fragment):
             str(fragment),
             blocks,
         )
-        pass
-    assert len(blocks) == 1
-    [uid, block] = blocks[0]
 
-    if block.get("@type") == "slate":
-        slate_value = block["value"]
-        visit_slate_nodes(slate_value, debug_translation)
+    if len(blocks) == 1:
+        [uid, block] = blocks[0]
+        if block.get("@type") == "slate":
+            slate_value = block["value"]
+            visit_slate_nodes(slate_value, debug_translation)
 
-        rawdata = fragment.attrs.get("data-volto-block", None)
-        if rawdata:
-            data = json.loads(rawdata)
-            block.update(data)
+            rawdata = fragment.attrs.get("data-volto-block", None)
+            if rawdata:
+                data = json.loads(rawdata)
+                block.update(data)
 
-    return [uid, block]
+        return [uid, block]
+
+    items = []
+    bb = {}
+    group_block = {
+        "@type": "group",
+        "data": {"blocks_layout": {"items": items}, "blocks": bb},
+    }
+    for uid, block in blocks:
+        if block.get("@type") == "slate":
+            slate_value = block["value"]
+            visit_slate_nodes(slate_value, debug_translation)
+
+            rawdata = fragment.attrs.get("data-volto-block", None)
+            if rawdata:
+                data = json.loads(rawdata)
+                block.update(data)
+
+        items.append(uid)
+        bb[uid] = block
+
+    return [make_uid(), group_block]
 
 
 converters = {
