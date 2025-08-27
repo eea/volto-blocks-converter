@@ -77,7 +77,8 @@ def serialize_statistics_block(block_data):
         labeldiv = E.DIV(*slate_to_elements(label), {"fieldname": "label"})
         valuediv = E.DIV(*slate_to_elements(value), {"fieldname": "value"})
 
-        itemdiv = E.DIV(labeldiv, valuediv, {"volto-data-item": json.dumps(item)})
+        itemdiv = E.DIV(labeldiv, valuediv, {
+                        "volto-data-item": json.dumps(item)})
         children.append(itemdiv)
 
     ediv = E.DIV(*children, **attributes)
@@ -157,7 +158,8 @@ def serialize_layout_block_with_titles(block_data):
             E.DIV(coldata.pop(name, ""), **{"data-fieldname": name})
             for name in translate_fields
         ]
-        metacol = E.DIV(*metatags, **{"data-volto-column": json.dumps(coldata)})
+        metacol = E.DIV(
+            *metatags, **{"data-volto-column": json.dumps(coldata)})
 
         for _, block in iterate_blocks(colblocksdata):
             colelements.extend(convert_block_to_elements(block))
@@ -221,13 +223,13 @@ def generic_slate_block(fieldname):
     return convertor
 
 
-def serialize_image(block_data):
-    # print("img", block_data)
-    attributes = {
-        "src": block_data["url"],
-        "data-volto-block": json.dumps(block_data),
-    }
-    return [E.IMG(**attributes)]
+# def serialize_image(block_data):
+#     # print("img", block_data)
+#     attributes = {
+#         "src": block_data["url"],
+#         "data-volto-block": json.dumps(block_data),
+#     }
+#     return [E.IMG(**attributes)]
 
 
 def serialize_group_block(block_data):
@@ -344,7 +346,7 @@ converters = {
     "slateTable": serialize_slate_table,
     # TODO: implement specific fields for the title block
     "title": serialize_title_block,
-    "image": serialize_image,
+    # "image": serialize_image,
     "columnsBlock": serialize_layout_block,
     "tabs_block": serialize_layout_block_with_titles,
     "accordion": serialize_layout_block_with_titles,
