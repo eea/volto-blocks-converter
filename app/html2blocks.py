@@ -197,10 +197,49 @@ def convert_accordion(soup):
         div.replace_with(block_tag(data, soup))
 
 
+def convert_hero(soup):
+    hero_blocks = soup.find_all("div", attrs={"data-block-type": "hero"})
+
+    for div in hero_blocks:
+        if not div.parent:
+            continue
+
+        # Base data
+        data_str = div.attrs.get("data-volto-block", "{}")
+        data = json.loads(data_str)
+        data["@type"] = "hero"
+
+        # Extract translated fields
+        for field in ["buttonLabel", "copyright"]:
+            field_div = div.find("div", attrs={"data-fieldname": field})
+            if field_div:
+                data[field] = field_div.text
+
+        # Extract nested blocks
+        blocks_div = div.find("div", attrs={"data-volto-section": "blocks"})
+        if blocks_div:
+            nested_blocks_list = text_to_blocks(blocks_div)
+
+            blocks = {}
+            blocks_layout_items = []
+
+            for uid, block in nested_blocks_list:
+                blocks[uid] = block
+                blocks_layout_items.append(uid)
+
+            data["data"] = {
+                "blocks": blocks,
+                "blocks_layout": {"items": blocks_layout_items}
+            }
+
+        div.replace_with(block_tag(data, soup))
+
+
 preprocessors = [
     convert_tabs,
     convert_iframe,
     convert_accordion,
+    convert_hero,
     convert_read_more,
     convert_button,
 ]
