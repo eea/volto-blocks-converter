@@ -51,5 +51,11 @@ def test_grid_roundtrip(json_payload):
     for key, val in block['blocks'].items():
         if val.get('title') == 'Heat':
             found_title = True
+            # Verify itemModel and callToAction
+            assert 'itemModel' in val
+            item_model = val['itemModel']
+            assert item_model.get('@type') == 'card'
+            assert 'callToAction' in item_model
+            assert item_model['callToAction'].get('label') == 'Read more'
             break
     assert found_title

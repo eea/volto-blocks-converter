@@ -116,6 +116,46 @@ def deserialize_layout_block_with_titles(fragment):
     return [uid, data]
 
 
+def deserialize_hero(fragment):
+    rawdata = fragment.attrs["data-volto-block"]
+    data = json.loads(rawdata)
+    data["@type"] = fragment.attrs["data-block-type"]
+
+    for ediv in fragment.children:
+        if not isinstance(ediv, Tag):
+            continue
+
+        if "data-fieldname" in ediv.attrs:
+            name = ediv.attrs["data-fieldname"]
+            data[name] = f"{DEBUG}{ediv.text}"
+        elif ediv.attrs.get("data-volto-section") == "blocks":
+            nested_data = deserialize_blocks(ediv)
+            if "data" not in data:
+                data["data"] = {}
+            data["data"].update(nested_data)
+
+    uid = str(uuid4())
+    return [uid, data]
+
+
+def deserialize_grid_block(fragment):
+    rawdata = fragment.attrs["data-volto-block"]
+    data = json.loads(rawdata)
+    data["@type"] = fragment.attrs["data-block-type"]
+
+    # deserialize_blocks iterates children and returns blocks dict and layout
+    # content = deserialize_blocks(fragment)
+    # data.update(content)
+
+    # gridBlock stores blocks at root
+    nested = deserialize_blocks(fragment)
+    data["blocks"] = nested["blocks"]
+    data["blocks_layout"] = nested["blocks_layout"]
+
+    uid = str(uuid4())
+    return [uid, data]
+
+
 def deserialize_group_block(fragment):
     rawdata = fragment.attrs["data-volto-block"]
     data = json.loads(rawdata)
@@ -311,6 +351,8 @@ converters = {
     # teaserGrid, teaser and cards are connected
     "teaserGrid": deserialize_teaserGrid,
     "teaser": deserialize_teaser,
+    "hero": deserialize_hero,
+    "gridBlock": deserialize_grid_block,
 }
 
 
