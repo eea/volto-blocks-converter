@@ -4,4 +4,5 @@ litestar==2.5.4
 pytest
 requests
 bs4
+sniffio
 -e .

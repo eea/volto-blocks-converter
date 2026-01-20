@@ -15,6 +15,7 @@ logger = logging.getLogger()
 
 TABLE_CELLS = {"header": E.TH, "data": E.TD}
 TEASER_FIELDS = ["title", "head_title", "description"]
+HERO_FIELDS = ["buttonLabel", "copyright"]
 CALLTOACTION_FIELDS = ["label"]
 
 
@@ -313,6 +314,60 @@ def serialize_teaser(block_data):
     return [div]
 
 
+def serialize_hero(block_data):
+    _type = block_data.pop("@type")
+
+    # Extract translated fields
+    children = []
+    for name in HERO_FIELDS:
+        value = block_data.pop(name, None)
+        if value is not None:
+            cdiv = E.DIV(value, **{"data-fieldname": name})
+            children.append(cdiv)
+
+    # Handle nested blocks
+    data_container = block_data.pop("data", {})
+    if data_container:
+        container_children = []
+        for _, block in iterate_blocks(data_container):
+            container_children.extend(convert_block_to_elements(block))
+
+        blocks_div = E.DIV(*container_children, **{"data-volto-section": "blocks"})
+        children.append(blocks_div)
+
+    attributes = {
+        "data-block-type": _type,
+        "data-volto-block": json.dumps(block_data),
+    }
+
+    div = E.DIV(*children, **attributes)
+    return [div]
+
+
+def serialize_grid_block(block_data):
+    _type = block_data.pop("@type")
+    
+    # gridBlock has 'blocks' and 'blocks_layout' directly at the root, 
+    # unlike other blocks where it might be under 'data'.
+    # We create a temporary structure to reuse iterate_blocks
+    temp_data = {
+        "blocks": block_data.pop("blocks", {}),
+        "blocks_layout": block_data.pop("blocks_layout", {"items": []})
+    }
+    
+    attributes = {
+        "data-block-type": _type,
+        "data-volto-block": json.dumps(block_data),
+    }
+
+    children = []
+    for _, block in iterate_blocks(temp_data):
+        children.extend(convert_block_to_elements(block))
+
+    div = E.DIV(*children, **attributes)
+    return [div]
+
+
 def serialize_title_block(block_data):
     _type = block_data.pop("@type")
     translate_fields = ["subtitle"]
@@ -364,6 +419,8 @@ converters = {
     # teaserGrid and teasers support (including the card)
     "teaserGrid": serialize_teaserGrid,
     "teaser": serialize_teaser,
+    "hero": serialize_hero,
+    "gridBlock": serialize_grid_block,
     # "card": serialize_item_model_card,
 }
 

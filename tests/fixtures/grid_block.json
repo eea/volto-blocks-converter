@@ -1,0 +1,945 @@
+{
+                "@type": "gridBlock", 
+                "blocks": {
+                  "0d9d1a16-f30a-4b67-b488-e2e55c674a3b": {
+                    "@type": "teaser", 
+                    "head_title": null, 
+                    "href": [
+                      {
+                        "@id": "https://climate-adapt.eea.europa.eu/en/observatory/topics/health-impacts/heat-and-health", 
+                        "@type": "Folder", 
+                        "Description": " Rising temperatures lead to an increase in the frequency and intensity of heatwaves, which pose significant risks to humans. Prolonged exposure to extreme heat can lead to a range of health issues, including heatstroke, dehydration, respiratory problems, and exacerbation of existing conditions. Vulnerable populations, such as the elderly, children, and those with preexisting health concerns, are particularly at risk. ", 
+                        "EffectiveDate": "2021-02-09T14:57:00+02:00", 
+                        "ExpirationDate": "None", 
+                        "Subject": [], 
+                        "Title": "Heat", 
+                        "description": " Climate change increases the frequency and intensity of hot spells and heatwaves, which pose significant risks to humans. Prolonged exposure to extreme heat can cause dehydration, heatstroke, and exacerbation of existing conditions. Vulnerable populations, such as the elderly, children, and those with heart, kidney, respiratory diseases or mental health concerns, are particularly at risk. ", 
+                        "effective": "2025-12-16T09:27:09+00:00", 
+                        "end": null, 
+                        "getObjSize": "1.2 MB", 
+                        "hasPreviewImage": true, 
+                        "head_title": null, 
+                        "image_field": "preview_image", 
+                        "image_scales": {
+                          "image": [
+                            {
+                              "content-type": "image/jpeg", 
+                              "download": "@@images/image-2047-07cbf9080b70b21528c74de5bcb5d969.jpeg", 
+                              "filename": "Heat_Mustafa_Binol_Urban Treasures_EEA.jpg", 
+                              "height": 1365, 
+                              "scales": {
+                                "big": {
+                                  "download": "@@images/image-80-7825516d10710a490cd08f2060842cab.jpeg", 
+                                  "height": 53, 
+                                  "width": 80
+                                }, 
+                                "great": {
+                                  "download": "@@images/image-1200-48e07c2fa1aea61b852057f96adb0f63.jpeg", 
+                                  "height": 800, 
+                                  "width": 1200
+                                }, 
+                                "huge": {
+                                  "download": "@@images/image-1920-918df73a0689aad570d5b7d6b82a6008.jpeg", 
+                                  "height": 1280, 
+                                  "width": 1920
+                                }, 
+                                "icon": {
+                                  "download": "@@images/image-32-997e1634cfa7d65556c0705ace1f85ac.jpeg", 
+                                  "height": 21, 
+                                  "width": 32
+                                }, 
+                                "large": {
+                                  "download": "@@images/image-800-359b78d13c6ed67d60e5d695ed8b5ec1.jpeg", 
+                                  "height": 533, 
+                                  "width": 800
+                                }, 
+                                "larger": {
+                                  "download": "@@images/image-1000-4556829481f1ef2898d84ddffb249ad0.jpeg", 
+                                  "height": 666, 
+                                  "width": 1000
+                                }, 
+                                "medium": {
+                                  "download": "@@images/image-60-4668ba4d1d68e0ac715a08a896c54254.jpeg", 
+                                  "height": 40, 
+                                  "width": 60
+                                }, 
+                                "mini": {
+                                  "download": "@@images/image-200-32902fe0b2d9824e9f0369893c5930f0.jpeg", 
+                                  "height": 133, 
+                                  "width": 200
+                                }, 
+                                "preview": {
+                                  "download": "@@images/image-400-c21bf06decb90da9558a5b7f6b84daef.jpeg", 
+                                  "height": 266, 
+                                  "width": 400
+                                }, 
+                                "small": {
+                                  "download": "@@images/image-48-b8d082cdbbeafa03ce7b5cde955c033c.jpeg", 
+                                  "height": 32, 
+                                  "width": 48
+                                }, 
+                                "teaser": {
+                                  "download": "@@images/image-600-8764df4f355835cb9b91d506885bd480.jpeg", 
+                                  "height": 400, 
+                                  "width": 600
+                                }, 
+                                "thumb": {
+                                  "download": "@@images/image-128-ea1915c2a6bc56d1daf63e7cde6a8bbc.jpeg", 
+                                  "height": 85, 
+                                  "width": 128
+                                }, 
+                                "tile": {
+                                  "download": "@@images/image-64-38fef452e0d42e9fb6c897909cb2ff52.jpeg", 
+                                  "height": 42, 
+                                  "width": 64
+                                }, 
+                                "tiny": {
+                                  "download": "@@images/image-24-4253d9e84616ddc3756791ea57cf131f.jpeg", 
+                                  "height": 16, 
+                                  "width": 24
+                                }
+                              }, 
+                              "size": 632017, 
+                              "width": 2047
+                            }
+                          ], 
+                          "preview_image": [
+                            {
+                              "content-type": "image/jpeg", 
+                              "download": "@@images/preview_image-2047-147b5bda85305185d1e239f6e3741ca4.jpeg", 
+                              "filename": "Heat_Mustafa_Binol_Urban Treasures_EEA.jpg", 
+                              "height": 1365, 
+                              "scales": {
+                                "big": {
+                                  "download": "@@images/preview_image-80-d18bf0a35026b46657883a46b9237cc0.jpeg", 
+                                  "height": 53, 
+                                  "width": 80
+                                }, 
+                                "great": {
+                                  "download": "@@images/preview_image-1200-58b9f54335ff1af3e788252f7c42cdd1.jpeg", 
+                                  "height": 800, 
+                                  "width": 1200
+                                }, 
+                                "huge": {
+                                  "download": "@@images/preview_image-1920-0512dd91c37a93fa8dda10dd3b9e796a.jpeg", 
+                                  "height": 1280, 
+                                  "width": 1920
+                                }, 
+                                "icon": {
+                                  "download": "@@images/preview_image-32-147788ea6bb6d3ede68cb0e3642c81a0.jpeg", 
+                                  "height": 21, 
+                                  "width": 32
+                                }, 
+                                "large": {
+                                  "download": "@@images/preview_image-800-669f2c9f02c03b1ecce764be6fd6f6cf.jpeg", 
+                                  "height": 533, 
+                                  "width": 800
+                                }, 
+                                "larger": {
+                                  "download": "@@images/preview_image-1000-5752b4b13f54fa2719c9416eee782c2d.jpeg", 
+                                  "height": 666, 
+                                  "width": 1000
+                                }, 
+                                "medium": {
+                                  "download": "@@images/preview_image-60-6517462f488310a5775bf19ab9aa0619.jpeg", 
+                                  "height": 40, 
+                                  "width": 60
+                                }, 
+                                "mini": {
+                                  "download": "@@images/preview_image-200-c74ea0837f57cdc79d599ccea02c21fb.jpeg", 
+                                  "height": 133, 
+                                  "width": 200
+                                }, 
+                                "preview": {
+                                  "download": "@@images/preview_image-400-a5f570eb13da0042f334342b29a6993f.jpeg", 
+                                  "height": 266, 
+                                  "width": 400
+                                }, 
+                                "small": {
+                                  "download": "@@images/preview_image-48-6398bfb9be63e8bb38944681bc5eaf97.jpeg", 
+                                  "height": 32, 
+                                  "width": 48
+                                }, 
+                                "teaser": {
+                                  "download": "@@images/preview_image-600-fe254da30040faf26f2f855c31c6e764.jpeg", 
+                                  "height": 400, 
+                                  "width": 600
+                                }, 
+                                "thumb": {
+                                  "download": "@@images/preview_image-128-ad2ad8d1b623fd23454eef04e3896b4c.jpeg", 
+                                  "height": 85, 
+                                  "width": 128
+                                }, 
+                                "tile": {
+                                  "download": "@@images/preview_image-64-f2823b6064060a68cb16e8dffe851d9b.jpeg", 
+                                  "height": 42, 
+                                  "width": 64
+                                }, 
+                                "tiny": {
+                                  "download": "@@images/preview_image-24-61449feb2e967f0ffe175b6b85d7493d.jpeg", 
+                                  "height": 16, 
+                                  "width": 24
+                                }
+                              }, 
+                              "size": 632017, 
+                              "width": 2047
+                            }
+                          ]
+                        }, 
+                        "mime_type": "message/rfc822", 
+                        "nav_title": null, 
+                        "review_state": "published", 
+                        "start": null, 
+                        "title": "Heat", 
+                        "type_title": "Folder"
+                      }
+                    ], 
+                    "itemModel": {
+                      "@type": "card", 
+                      "callToAction": {
+                        "label": "Read more"
+                      }, 
+                      "hasDate": false, 
+                      "hasEventDate": false, 
+                      "hasLink": true, 
+                      "maxDescription": 2, 
+                      "maxTitle": 2, 
+                      "styles": {}, 
+                      "titleOnImage": true
+                    }, 
+                    "overwrite": true, 
+                    "preview_image": [
+                      {
+                        "@id": "https://climate-adapt.eea.europa.eu/en/observatory/heat_mustafa_binol_urban-treasures_eea-1.jpg", 
+                        "image_field": "image", 
+                        "image_scales": {
+                          "image": [
+                            {
+                              "content-type": "image/jpeg", 
+                              "download": "@@images/image-2047-b9c4840d3adad3f5c1a8026050225ec4.jpeg", 
+                              "filename": "Heat_Mustafa_Binol_Urban Treasures_EEA.jpg", 
+                              "height": 1365, 
+                              "scales": {
+                                "big": {
+                                  "download": "@@images/image-80-43d578b64ac186f45b8c60b03072a4f3.jpeg", 
+                                  "height": 53, 
+                                  "width": 80
+                                }, 
+                                "great": {
+                                  "download": "@@images/image-1200-2a94eebea4b202461e0df48026834ff7.jpeg", 
+                                  "height": 800, 
+                                  "width": 1200
+                                }, 
+                                "huge": {
+                                  "download": "@@images/image-1920-5f27e42ea3fa0c1f670db78a7a9baf1c.jpeg", 
+                                  "height": 1280, 
+                                  "width": 1920
+                                }, 
+                                "icon": {
+                                  "download": "@@images/image-32-c5160f6f0abbcd0d9a92ffafc733ba1b.jpeg", 
+                                  "height": 21, 
+                                  "width": 32
+                                }, 
+                                "large": {
+                                  "download": "@@images/image-800-fad1ab3b65745d307d190e6260d4624e.jpeg", 
+                                  "height": 533, 
+                                  "width": 800
+                                }, 
+                                "larger": {
+                                  "download": "@@images/image-1000-00de8365f5181ba2f08d97f77948dafe.jpeg", 
+                                  "height": 666, 
+                                  "width": 1000
+                                }, 
+                                "medium": {
+                                  "download": "@@images/image-60-97601f5d6ceeb0c6b19d5aef3d407268.jpeg", 
+                                  "height": 40, 
+                                  "width": 60
+                                }, 
+                                "mini": {
+                                  "download": "@@images/image-200-8491a2a0b96cbe2e55623e6e6aff3e8d.jpeg", 
+                                  "height": 133, 
+                                  "width": 200
+                                }, 
+                                "preview": {
+                                  "download": "@@images/image-400-dfcaec8af1d47ee07f3ebf5838f29a4c.jpeg", 
+                                  "height": 266, 
+                                  "width": 400
+                                }, 
+                                "small": {
+                                  "download": "@@images/image-48-4ede39dfc95beb749b59be9dd145d27c.jpeg", 
+                                  "height": 32, 
+                                  "width": 48
+                                }, 
+                                "teaser": {
+                                  "download": "@@images/image-600-640d96c5ec24a3cf5729581314aefcf9.jpeg", 
+                                  "height": 400, 
+                                  "width": 600
+                                }, 
+                                "thumb": {
+                                  "download": "@@images/image-128-ec43aa9f5e1aa449ae278c2f623a169f.jpeg", 
+                                  "height": 85, 
+                                  "width": 128
+                                }, 
+                                "tile": {
+                                  "download": "@@images/image-64-45f6eda1e4b514a3d75c25fecfb2b2f0.jpeg", 
+                                  "height": 42, 
+                                  "width": 64
+                                }, 
+                                "tiny": {
+                                  "download": "@@images/image-24-4f0dec35084c61d819c070488d267646.jpeg", 
+                                  "height": 16, 
+                                  "width": 24
+                                }
+                              }, 
+                              "size": 632017, 
+                              "width": 2047
+                            }
+                          ]
+                        }, 
+                        "title": "Heat_Mustafa_Binol_Urban Treasures_EEA.jpg"
+                      }
+                    ], 
+                    "styles": {
+                      "align": "left"
+                    }, 
+                    "title": "Heat"
+                  }, 
+                  "4f456059-23d7-40f9-98e9-ea268e6887e6": {
+                    "@type": "teaser", 
+                    "description": "    Rising temperatures and extreme weather increases the transmission risk of vector-, water-, and food-borne diseases by altering the geographic ranges of vectors and hosts, promoting pathogen growth in water and food, and potentially impacting food system safety and yields.  ", 
+                    "head_title": null, 
+                    "href": [
+                      {
+                        "@id": "https://climate-adapt.eea.europa.eu/en/observatory/topics/health-impacts/infectious-diseases", 
+                        "@type": "Folder", 
+                        "Description": "    Rising temperatures and extreme weather increases the transmission risk of vector-, water-, and food-borne diseases by altering the geographic ranges of vectors and hosts, promoting pathogen growth in water and food, and potentially impacting food system safety and yields.  ", 
+                        "EffectiveDate": "2021-02-09T22:10:00+02:00", 
+                        "ExpirationDate": "None", 
+                        "Subject": [], 
+                        "Title": "Infectious diseases", 
+                        "description": " Climate change expands the range and risk of vector-borne diseases by altering temperature, rainfall, and humidity, which affects the life cycles of vectors like mosquitoes and ticks.\u00a0It also\u00a0increases the risk of waterborne diseases by promoting the growth of pathogens in contaminated water, especially during periods of heavy rainfall and drought.     ", 
+                        "effective": "2021-02-09T20:10:00+00:00", 
+                        "end": null, 
+                        "getObjSize": "706.0 KB", 
+                        "hasPreviewImage": true, 
+                        "head_title": null, 
+                        "image_field": "preview_image", 
+                        "image_scales": {
+                          "image": [
+                            {
+                              "content-type": "image/jpeg", 
+                              "download": "@@images/image-1280-b560cd7cd33b93e25fc60d7b8c5962b8.jpeg", 
+                              "filename": "Food_disease_Pixabay.jpg", 
+                              "height": 926, 
+                              "scales": {
+                                "big": {
+                                  "download": "@@images/image-80-7c3801941688aa477fc22ddaa533b06d.jpeg", 
+                                  "height": 57, 
+                                  "width": 80
+                                }, 
+                                "great": {
+                                  "download": "@@images/image-1200-b4b4c6acb9f8bb131bfbf96781eb9b4d.jpeg", 
+                                  "height": 868, 
+                                  "width": 1200
+                                }, 
+                                "icon": {
+                                  "download": "@@images/image-32-83b3a53683a87bb629916d76fe7ef2a0.jpeg", 
+                                  "height": 23, 
+                                  "width": 32
+                                }, 
+                                "large": {
+                                  "download": "@@images/image-800-8ae98354d262e19aacaa0c923e7f7c51.jpeg", 
+                                  "height": 578, 
+                                  "width": 800
+                                }, 
+                                "larger": {
+                                  "download": "@@images/image-1000-a118e92bb95afc5606e4789e8bcec65e.jpeg", 
+                                  "height": 723, 
+                                  "width": 1000
+                                }, 
+                                "medium": {
+                                  "download": "@@images/image-60-7b1a8e788db9c90585b705f4f8490a87.jpeg", 
+                                  "height": 43, 
+                                  "width": 60
+                                }, 
+                                "mini": {
+                                  "download": "@@images/image-200-ec5ce5128ea5cc297ec3c03687a7731f.jpeg", 
+                                  "height": 144, 
+                                  "width": 200
+                                }, 
+                                "preview": {
+                                  "download": "@@images/image-400-9c766616c99bd0e5202fbd980cbe00ae.jpeg", 
+                                  "height": 289, 
+                                  "width": 400
+                                }, 
+                                "small": {
+                                  "download": "@@images/image-48-401d5ffec2ce0f1fb8fc08cdeb812717.jpeg", 
+                                  "height": 34, 
+                                  "width": 48
+                                }, 
+                                "teaser": {
+                                  "download": "@@images/image-600-6808d6c1c46d7856b56aaf267e263fb0.jpeg", 
+                                  "height": 434, 
+                                  "width": 600
+                                }, 
+                                "thumb": {
+                                  "download": "@@images/image-128-5ba7fe73be970b379bd5cde4f96da716.jpeg", 
+                                  "height": 92, 
+                                  "width": 128
+                                }, 
+                                "tile": {
+                                  "download": "@@images/image-64-66eb37c240b29ae0c04465f5bd026795.jpeg", 
+                                  "height": 46, 
+                                  "width": 64
+                                }, 
+                                "tiny": {
+                                  "download": "@@images/image-24-1b5d75847b76290dcf7f65878804bb6b.jpeg", 
+                                  "height": 17, 
+                                  "width": 24
+                                }
+                              }, 
+                              "size": 361461, 
+                              "width": 1280
+                            }
+                          ], 
+                          "preview_image": [
+                            {
+                              "content-type": "image/jpeg", 
+                              "download": "@@images/preview_image-1280-075ecef267a00b04efd5dbe74e1c3fab.jpeg", 
+                              "filename": "Food_disease_Pixabay.jpg", 
+                              "height": 926, 
+                              "scales": {
+                                "big": {
+                                  "download": "@@images/preview_image-80-b879eafd8aede3cc8f2e6d0d80e192bb.jpeg", 
+                                  "height": 57, 
+                                  "width": 80
+                                }, 
+                                "great": {
+                                  "download": "@@images/preview_image-1200-fba23175c938c2a185f8a48efeaadadf.jpeg", 
+                                  "height": 868, 
+                                  "width": 1200
+                                }, 
+                                "icon": {
+                                  "download": "@@images/preview_image-32-6840fa16835f6548e21689a799d2391f.jpeg", 
+                                  "height": 23, 
+                                  "width": 32
+                                }, 
+                                "large": {
+                                  "download": "@@images/preview_image-800-8fa0d8437eed461a400d72205b35ef32.jpeg", 
+                                  "height": 578, 
+                                  "width": 800
+                                }, 
+                                "larger": {
+                                  "download": "@@images/preview_image-1000-ee5a6756e7ff5b048863413286a092d3.jpeg", 
+                                  "height": 723, 
+                                  "width": 1000
+                                }, 
+                                "medium": {
+                                  "download": "@@images/preview_image-60-40fd4917020034bb71ddd4850ccf5033.jpeg", 
+                                  "height": 43, 
+                                  "width": 60
+                                }, 
+                                "mini": {
+                                  "download": "@@images/preview_image-200-eb51a9921ea93cc384973c454df12d7c.jpeg", 
+                                  "height": 144, 
+                                  "width": 200
+                                }, 
+                                "preview": {
+                                  "download": "@@images/preview_image-400-700308f70944610419a19942f7a846a1.jpeg", 
+                                  "height": 289, 
+                                  "width": 400
+                                }, 
+                                "small": {
+                                  "download": "@@images/preview_image-48-06eac34fc9e161ffee722542eab574ae.jpeg", 
+                                  "height": 34, 
+                                  "width": 48
+                                }, 
+                                "teaser": {
+                                  "download": "@@images/preview_image-600-4e6268e3f5aa9574f8bc452fa1a9c97a.jpeg", 
+                                  "height": 434, 
+                                  "width": 600
+                                }, 
+                                "thumb": {
+                                  "download": "@@images/preview_image-128-6c6a259d3d22f753ef04a3ac31cf28aa.jpeg", 
+                                  "height": 92, 
+                                  "width": 128
+                                }, 
+                                "tile": {
+                                  "download": "@@images/preview_image-64-cdce7975ccd8ef87d609c08c417542c7.jpeg", 
+                                  "height": 46, 
+                                  "width": 64
+                                }, 
+                                "tiny": {
+                                  "download": "@@images/preview_image-24-7bfdf7aa2e6a676053a9b3700791fe2e.jpeg", 
+                                  "height": 17, 
+                                  "width": 24
+                                }
+                              }, 
+                              "size": 361461, 
+                              "width": 1280
+                            }
+                          ]
+                        }, 
+                        "mime_type": "message/rfc822", 
+                        "nav_title": null, 
+                        "review_state": "published", 
+                        "start": null, 
+                        "title": "Infectious diseases", 
+                        "type_title": "Folder"
+                      }
+                    ], 
+                    "itemModel": {
+                      "@type": "card", 
+                      "callToAction": {
+                        "label": "Read more"
+                      }, 
+                      "hasDate": false, 
+                      "hasEventDate": false, 
+                      "hasLink": true, 
+                      "maxDescription": 2, 
+                      "maxTitle": 2, 
+                      "styles": {}, 
+                      "titleOnImage": true
+                    }, 
+                    "overwrite": true, 
+                    "styles": {
+                      "align": "left"
+                    }, 
+                    "title": "Infectious diseases"
+                  }, 
+                  "66ae9cb1-f7e9-4f05-b4ee-ce1d22e66bde": {
+                    "@type": "teaser", 
+                    "description": " ", 
+                    "head_title": null, 
+                    "href": [
+                      {
+                        "@id": "https://climate-adapt.eea.europa.eu/en/observatory/topics/health-impacts/flooding", 
+                        "@type": "Folder", 
+                        "Description": " Flooding poses serious physical and mental health risks, including drowning, injuries, and infectious diseases from contaminated water. Vulnerable groups like children, the elderly, and chronically ill are especially at risk.  Climate change is projected to increase flood exposure across Europe. ", 
+                        "EffectiveDate": "2021-02-09T14:57:00+02:00", 
+                        "ExpirationDate": "None", 
+                        "Subject": [], 
+                        "Title": "Flooding", 
+                        "description": " Flooding poses serious health risks, including drowning, injuries, and infectious diseases from contaminated water. It also causes mental trauma. Vulnerable groups like children, the elderly, and chronically ill are especially at risk. Climate change is projected to increase flood exposure across Europe.   ", 
+                        "effective": "2025-11-07T14:07:07+00:00", 
+                        "end": null, 
+                        "getObjSize": "2.6 MB", 
+                        "hasPreviewImage": true, 
+                        "head_title": null, 
+                        "image_field": "preview_image", 
+                        "image_scales": {
+                          "image": [
+                            {
+                              "content-type": "image/jpeg", 
+                              "download": "@@images/image-2048-b8b5744d76633104c871828c7b3d9bc9.jpeg", 
+                              "filename": "Flood_people_Cesare_Barilla_Environment_and_me_2025_EEA.jpg", 
+                              "height": 1365, 
+                              "scales": {
+                                "big": {
+                                  "download": "@@images/image-80-7a6eadc925ffca8ce752ccbf7f35225b.jpeg", 
+                                  "height": 53, 
+                                  "width": 80
+                                }, 
+                                "great": {
+                                  "download": "@@images/image-1200-829404e4cabdb2221d0ec20960643808.jpeg", 
+                                  "height": 799, 
+                                  "width": 1200
+                                }, 
+                                "huge": {
+                                  "download": "@@images/image-1920-c1c24933dbe24588c56a4f89c5b4d97e.jpeg", 
+                                  "height": 1279, 
+                                  "width": 1920
+                                }, 
+                                "icon": {
+                                  "download": "@@images/image-32-62c6ff48818e27858dcaee601729d974.jpeg", 
+                                  "height": 21, 
+                                  "width": 32
+                                }, 
+                                "large": {
+                                  "download": "@@images/image-800-d6e09efc6be9a9f838b9bd0644bba839.jpeg", 
+                                  "height": 533, 
+                                  "width": 800
+                                }, 
+                                "larger": {
+                                  "download": "@@images/image-1000-e6fa06540cb78b1b57b3f899eda8131c.jpeg", 
+                                  "height": 666, 
+                                  "width": 1000
+                                }, 
+                                "medium": {
+                                  "download": "@@images/image-60-b6bec30c63bae4a14bdf3f503738c19c.jpeg", 
+                                  "height": 39, 
+                                  "width": 60
+                                }, 
+                                "mini": {
+                                  "download": "@@images/image-200-066d19e34ce618d2b9074c140614d7c8.jpeg", 
+                                  "height": 133, 
+                                  "width": 200
+                                }, 
+                                "preview": {
+                                  "download": "@@images/image-400-a9bfb6d4e5281d83ea8e393c94e8ad80.jpeg", 
+                                  "height": 266, 
+                                  "width": 400
+                                }, 
+                                "small": {
+                                  "download": "@@images/image-48-4786e85e9ea377722710a4af2af61eb4.jpeg", 
+                                  "height": 31, 
+                                  "width": 48
+                                }, 
+                                "teaser": {
+                                  "download": "@@images/image-600-f82ec20a81ab5124e475097707839b57.jpeg", 
+                                  "height": 399, 
+                                  "width": 600
+                                }, 
+                                "thumb": {
+                                  "download": "@@images/image-128-b2ddbbe8fe4cc7400e2b3e80fed29866.jpeg", 
+                                  "height": 85, 
+                                  "width": 128
+                                }, 
+                                "tile": {
+                                  "download": "@@images/image-64-1f6022c222f593f0fe6160e8aef7c00f.jpeg", 
+                                  "height": 42, 
+                                  "width": 64
+                                }, 
+                                "tiny": {
+                                  "download": "@@images/image-24-48e30aaff40759b5cc7d0e5ef8ccc085.jpeg", 
+                                  "height": 15, 
+                                  "width": 24
+                                }
+                              }, 
+                              "size": 1337457, 
+                              "width": 2048
+                            }
+                          ], 
+                          "preview_image": [
+                            {
+                              "content-type": "image/jpeg", 
+                              "download": "@@images/preview_image-2048-fe1a2e81684990fa356d41354933230e.jpeg", 
+                              "filename": "Flood_people_Cesare_Barilla_Environment_and_me_2025_EEA.jpg", 
+                              "height": 1365, 
+                              "scales": {
+                                "big": {
+                                  "download": "@@images/preview_image-80-20bf5716623e85778f48639367560e96.jpeg", 
+                                  "height": 53, 
+                                  "width": 80
+                                }, 
+                                "great": {
+                                  "download": "@@images/preview_image-1200-fbe48ec1e2136809407e5fa07219959b.jpeg", 
+                                  "height": 799, 
+                                  "width": 1200
+                                }, 
+                                "huge": {
+                                  "download": "@@images/preview_image-1920-ae02e31779d07d66481876918b4b995c.jpeg", 
+                                  "height": 1279, 
+                                  "width": 1920
+                                }, 
+                                "icon": {
+                                  "download": "@@images/preview_image-32-e1ccbd9df7bef38474c77e6b32782121.jpeg", 
+                                  "height": 21, 
+                                  "width": 32
+                                }, 
+                                "large": {
+                                  "download": "@@images/preview_image-800-4d25c31084434fa6e33afc4a6641c034.jpeg", 
+                                  "height": 533, 
+                                  "width": 800
+                                }, 
+                                "larger": {
+                                  "download": "@@images/preview_image-1000-85cd949faf8ab61fe1501e25c39b51ed.jpeg", 
+                                  "height": 666, 
+                                  "width": 1000
+                                }, 
+                                "medium": {
+                                  "download": "@@images/preview_image-60-d8250f4e549b6c0daf5aa57037896331.jpeg", 
+                                  "height": 39, 
+                                  "width": 60
+                                }, 
+                                "mini": {
+                                  "download": "@@images/preview_image-200-2f22d03793339cb8e288e98b3dcac1d0.jpeg", 
+                                  "height": 133, 
+                                  "width": 200
+                                }, 
+                                "preview": {
+                                  "download": "@@images/preview_image-400-386265102bd30f2322fcf148d214b8a9.jpeg", 
+                                  "height": 266, 
+                                  "width": 400
+                                }, 
+                                "small": {
+                                  "download": "@@images/preview_image-48-6307851bd971a7ef030fbc89fd0fe871.jpeg", 
+                                  "height": 31, 
+                                  "width": 48
+                                }, 
+                                "teaser": {
+                                  "download": "@@images/preview_image-600-5b6653003f891e0906d94d4bc6e2bbb4.jpeg", 
+                                  "height": 399, 
+                                  "width": 600
+                                }, 
+                                "thumb": {
+                                  "download": "@@images/preview_image-128-ce394d20a3aa88fa28c095537a485ac6.jpeg", 
+                                  "height": 85, 
+                                  "width": 128
+                                }, 
+                                "tile": {
+                                  "download": "@@images/preview_image-64-4b5990fe08257791955a19779a9002f6.jpeg", 
+                                  "height": 42, 
+                                  "width": 64
+                                }, 
+                                "tiny": {
+                                  "download": "@@images/preview_image-24-577409c37b7bcc38837b4cbfe3b9ca5f.jpeg", 
+                                  "height": 15, 
+                                  "width": 24
+                                }
+                              }, 
+                              "size": 1337457, 
+                              "width": 2048
+                            }
+                          ]
+                        }, 
+                        "mime_type": "message/rfc822", 
+                        "nav_title": null, 
+                        "review_state": "published", 
+                        "start": null, 
+                        "title": "Flooding", 
+                        "type_title": "Folder"
+                      }
+                    ], 
+                    "itemModel": {
+                      "@type": "card", 
+                      "callToAction": {
+                        "label": "Read more"
+                      }, 
+                      "hasDate": false, 
+                      "hasEventDate": false, 
+                      "hasLink": true, 
+                      "maxDescription": 2, 
+                      "maxTitle": 2, 
+                      "styles": {}, 
+                      "titleOnImage": true
+                    }, 
+                    "overwrite": true, 
+                    "styles": {
+                      "align": "left"
+                    }, 
+                    "title": "Flooding"
+                  }, 
+                  "a971811f-cd5e-4028-a027-bff438b5d624": {
+                    "@type": "teaser", 
+                    "description": " Climate change impacts mental health, especially among vulnerable populations. Extreme weather, heat, and environmental changes contribute to anxiety, trauma, and PTSD. Mental health impacts remain underexplored compared to physical health, despite growing exposure risks. ", 
+                    "head_title": null, 
+                    "href": [
+                      {
+                        "@id": "https://climate-adapt.eea.europa.eu/en/observatory/topics/health-impacts/mental-health-effects", 
+                        "@type": "Folder", 
+                        "Description": " Climate change impacts mental health, especially among vulnerable populations. Extreme weather, heat, and environmental changes contribute to anxiety, trauma, and PTSD. Mental health impacts remain underexplored compared to physical health, despite growing exposure risks. ", 
+                        "EffectiveDate": "2022-03-30T17:52:00+02:00", 
+                        "ExpirationDate": "None", 
+                        "Subject": [], 
+                        "Title": "Mental health", 
+                        "description": "   Climate change impacts mental health, especially among vulnerable populations. Extreme weather causes trauma, often with longer-term implications, whilst concern about ongoing climate change may develop into eco-anxiety. Mental health impacts remain underexplored compared to physical health. ", 
+                        "effective": "2022-03-30T15:52:00+00:00", 
+                        "end": null, 
+                        "getObjSize": "364.3 KB", 
+                        "hasPreviewImage": true, 
+                        "head_title": null, 
+                        "image_field": "preview_image", 
+                        "image_scales": {
+                          "image": [
+                            {
+                              "content-type": "image/jpeg", 
+                              "download": "@@images/image-1920-97ddf3055f20d7caf18c8fe37a80e5b3.jpeg", 
+                              "filename": "Mental_health_Pexels.jpg", 
+                              "height": 1282, 
+                              "scales": {
+                                "big": {
+                                  "download": "@@images/image-80-8bbff6582c2b3e17be91a06284b1e810.jpeg", 
+                                  "height": 53, 
+                                  "width": 80
+                                }, 
+                                "great": {
+                                  "download": "@@images/image-1200-b6a636055aaed63b36ccbfca35e3e5da.jpeg", 
+                                  "height": 801, 
+                                  "width": 1200
+                                }, 
+                                "huge": {
+                                  "download": "@@images/image-1920-f4428c82528360f7c724f7bac6865d25.jpeg", 
+                                  "height": 1282, 
+                                  "width": 1920
+                                }, 
+                                "icon": {
+                                  "download": "@@images/image-32-e14a9ac82ee7a95894d68132302ab251.jpeg", 
+                                  "height": 21, 
+                                  "width": 32
+                                }, 
+                                "large": {
+                                  "download": "@@images/image-800-75af486a0740627fc1402b829885ac6e.jpeg", 
+                                  "height": 534, 
+                                  "width": 800
+                                }, 
+                                "larger": {
+                                  "download": "@@images/image-1000-2ef89bf3dac150c85943898756e51cb2.jpeg", 
+                                  "height": 667, 
+                                  "width": 1000
+                                }, 
+                                "medium": {
+                                  "download": "@@images/image-60-88c6a4d736d7df4d106ca5bcd1be4197.jpeg", 
+                                  "height": 40, 
+                                  "width": 60
+                                }, 
+                                "mini": {
+                                  "download": "@@images/image-200-336baaa1ebb5ec279df038c11f317f62.jpeg", 
+                                  "height": 133, 
+                                  "width": 200
+                                }, 
+                                "preview": {
+                                  "download": "@@images/image-400-cc77d31564ee4af69c5f206ce21b5c9a.jpeg", 
+                                  "height": 267, 
+                                  "width": 400
+                                }, 
+                                "small": {
+                                  "download": "@@images/image-48-0c78bef165a2136efb395618bd5199cb.jpeg", 
+                                  "height": 32, 
+                                  "width": 48
+                                }, 
+                                "teaser": {
+                                  "download": "@@images/image-600-c5b4664c32c5b89b087c984f57fa106f.jpeg", 
+                                  "height": 400, 
+                                  "width": 600
+                                }, 
+                                "thumb": {
+                                  "download": "@@images/image-128-de501ced704cc4dce76d6f57bf351602.jpeg", 
+                                  "height": 85, 
+                                  "width": 128
+                                }, 
+                                "tile": {
+                                  "download": "@@images/image-64-ad7cca29b9e559cb5c1c7f153354b05f.jpeg", 
+                                  "height": 42, 
+                                  "width": 64
+                                }, 
+                                "tiny": {
+                                  "download": "@@images/image-24-e4865ecfec6ce84685b367633ca342bf.jpeg", 
+                                  "height": 16, 
+                                  "width": 24
+                                }
+                              }, 
+                              "size": 186528, 
+                              "width": 1920
+                            }
+                          ], 
+                          "preview_image": [
+                            {
+                              "content-type": "image/jpeg", 
+                              "download": "@@images/preview_image-1920-0bf6a5a7466fd65e774083b33a663e05.jpeg", 
+                              "filename": "Mental_health_Pexels.jpg", 
+                              "height": 1282, 
+                              "scales": {
+                                "big": {
+                                  "download": "@@images/preview_image-80-7d740a0b7b0c36a7db5c3f4b0c28351f.jpeg", 
+                                  "height": 53, 
+                                  "width": 80
+                                }, 
+                                "great": {
+                                  "download": "@@images/preview_image-1200-c1701d787604f7228c15be1d61dcd94d.jpeg", 
+                                  "height": 801, 
+                                  "width": 1200
+                                }, 
+                                "huge": {
+                                  "download": "@@images/preview_image-1920-309c6aca477853cbf4d6cb9b0b9bb2b2.jpeg", 
+                                  "height": 1282, 
+                                  "width": 1920
+                                }, 
+                                "icon": {
+                                  "download": "@@images/preview_image-32-31d28275c5e32266f9fcb4070635ede1.jpeg", 
+                                  "height": 21, 
+                                  "width": 32
+                                }, 
+                                "large": {
+                                  "download": "@@images/preview_image-800-53b09511352a450f5b07b2f379603113.jpeg", 
+                                  "height": 534, 
+                                  "width": 800
+                                }, 
+                                "larger": {
+                                  "download": "@@images/preview_image-1000-fc315dd237fb5865886ed748c41fea42.jpeg", 
+                                  "height": 667, 
+                                  "width": 1000
+                                }, 
+                                "medium": {
+                                  "download": "@@images/preview_image-60-14f5773df714b209a6f389d279eac41d.jpeg", 
+                                  "height": 40, 
+                                  "width": 60
+                                }, 
+                                "mini": {
+                                  "download": "@@images/preview_image-200-83e459313c8766a53af6ed683df6ee35.jpeg", 
+                                  "height": 133, 
+                                  "width": 200
+                                }, 
+                                "preview": {
+                                  "download": "@@images/preview_image-400-abdfa7f5e469ea96f8f6a60676318a8c.jpeg", 
+                                  "height": 267, 
+                                  "width": 400
+                                }, 
+                                "small": {
+                                  "download": "@@images/preview_image-48-41ccc94a6d4eedfdb3920b0f50a7543f.jpeg", 
+                                  "height": 32, 
+                                  "width": 48
+                                }, 
+                                "teaser": {
+                                  "download": "@@images/preview_image-600-a25a28c97046312c9ac0c7600f2c4965.jpeg", 
+                                  "height": 400, 
+                                  "width": 600
+                                }, 
+                                "thumb": {
+                                  "download": "@@images/preview_image-128-837dfaeea6d98328d812e1f0b7d8a3aa.jpeg", 
+                                  "height": 85, 
+                                  "width": 128
+                                }, 
+                                "tile": {
+                                  "download": "@@images/preview_image-64-7db02358931c811281eb1ece903f4e8e.jpeg", 
+                                  "height": 42, 
+                                  "width": 64
+                                }, 
+                                "tiny": {
+                                  "download": "@@images/preview_image-24-5fa2bd7737a88a3713574268d03a7db5.jpeg", 
+                                  "height": 16, 
+                                  "width": 24
+                                }
+                              }, 
+                              "size": 186528, 
+                              "width": 1920
+                            }
+                          ]
+                        }, 
+                        "mime_type": "message/rfc822", 
+                        "nav_title": null, 
+                        "review_state": "published", 
+                        "start": null, 
+                        "title": "Mental health", 
+                        "type_title": "Folder"
+                      }
+                    ], 
+                    "itemModel": {
+                      "@type": "card", 
+                      "callToAction": {
+                        "label": "Read more"
+                      }, 
+                      "hasDate": false, 
+                      "hasEventDate": false, 
+                      "hasLink": true, 
+                      "maxDescription": 2, 
+                      "maxTitle": 2, 
+                      "styles": {}, 
+                      "titleOnImage": true
+                    }, 
+                    "overwrite": true, 
+                    "styles": {
+                      "align": "left"
+                    }, 
+                    "title": "Mental health"
+                  }
+                }, 
+                "blocks_layout": {
+                  "items": [
+                    "0d9d1a16-f30a-4b67-b488-e2e55c674a3b", 
+                    "66ae9cb1-f7e9-4f05-b4ee-ce1d22e66bde", 
+                    "4f456059-23d7-40f9-98e9-ea268e6887e6", 
+                    "a971811f-cd5e-4028-a027-bff438b5d624"
+                  ]
+                }
+              }

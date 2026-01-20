@@ -197,10 +197,125 @@ def convert_accordion(soup):
         div.replace_with(block_tag(data, soup))
 
 
+def convert_grid_block(soup):
+    grid_blocks = soup.find_all("div", attrs={"data-block-type": "gridBlock"})
+
+    for div in grid_blocks:
+        if not div.parent:
+            continue
+
+        # Base data
+        data_str = div.attrs.get("data-volto-block", "{}")
+        data = json.loads(data_str)
+        data["@type"] = "gridBlock"
+
+        # The gridBlock stores its blocks directly under 'blocks' and 'blocks_layout'
+        # unlike other blocks which put them under 'data'.
+        # However, text_to_blocks returns a list of [uid, block], so we need to
+        # reconstruction the structure.
+        
+        # We need to process the children of the div to find the nested blocks
+        nested_blocks_list = text_to_blocks(div)
+
+        blocks = {}
+        blocks_layout_items = []
+
+        for uid, block in nested_blocks_list:
+            blocks[uid] = block
+            blocks_layout_items.append(uid)
+            
+        # We update the existing data with the potentially modified nested blocks
+        # (e.g. translated content)
+        data["blocks"] = blocks
+        data["blocks_layout"] = {"items": blocks_layout_items}
+
+        div.replace_with(block_tag(data, soup))
+
+
+def convert_hero(soup):
+    hero_blocks = soup.find_all("div", attrs={"data-block-type": "hero"})
+
+    for div in hero_blocks:
+        if not div.parent:
+            continue
+
+        # Base data
+        data_str = div.attrs.get("data-volto-block", "{}")
+        data = json.loads(data_str)
+        data["@type"] = "hero"
+
+        # Extract translated fields
+        for field in ["buttonLabel", "copyright"]:
+            field_div = div.find("div", attrs={"data-fieldname": field})
+            if field_div:
+                data[field] = field_div.text
+
+        # Extract nested blocks
+        blocks_div = div.find("div", attrs={"data-volto-section": "blocks"})
+        if blocks_div:
+            nested_blocks_list = text_to_blocks(blocks_div)
+
+            blocks = {}
+            blocks_layout_items = []
+
+            for uid, block in nested_blocks_list:
+                blocks[uid] = block
+                blocks_layout_items.append(uid)
+
+            data["data"] = {
+                "blocks": blocks,
+                "blocks_layout": {"items": blocks_layout_items}
+            }
+
+        div.replace_with(block_tag(data, soup))
+
+
+def convert_teaser(soup):
+    teasers = soup.find_all("div", attrs={"data-block-type": "teaser"})
+
+    for div in teasers:
+        if not div.parent:
+            continue
+
+        data_str = div.attrs.get("data-volto-block", "{}")
+        data = json.loads(data_str)
+        data["@type"] = "teaser"
+
+        # Extract fields
+        for field_div in div.find_all("div", attrs={"data-fieldname": True}):
+            if field_div.parent == div:
+                data[field_div.attrs["data-fieldname"]] = field_div.text
+
+        # Extract itemModel
+        item_model_div = div.find("div", attrs={"data-model-type": True})
+        if item_model_div and item_model_div.parent == div:
+            model_data_str = item_model_div.attrs.get("data-volto-block", "{}")
+            model_data = json.loads(model_data_str)
+            model_data["@type"] = item_model_div.attrs["data-model-type"]
+
+            # Handle callToAction in itemModel
+            call_div = item_model_div.find(
+                "div", attrs={"data-volto-calltoaction": True})
+            if call_div:
+                call_data = json.loads(
+                    call_div.attrs["data-volto-calltoaction"])
+                # Extract label from children
+                for child in call_div.find_all("div", attrs={"data-fieldname": "label"}):
+                    call_data["label"] = child.text
+                model_data["callToAction"] = call_data
+
+            data["itemModel"] = model_data
+
+        div.replace_with(block_tag(data, soup))
+
+
 preprocessors = [
     convert_tabs,
     convert_iframe,
     convert_accordion,
+    convert_hero,
+    convert_grid_block,
+    convert_teaser,
     convert_read_more,
     convert_button,
 ]
