@@ -5,6 +5,7 @@ from copy import deepcopy
 from uuid import uuid4
 
 from bs4 import BeautifulSoup
+from lxml import etree
 from lxml.html import document_fromstring
 
 from app.config import DEFAULT_BLOCK_TYPE, VALID_TOPLEVEL_SLATE_TYPES
@@ -94,9 +95,11 @@ def convert_tabs(soup):
             tab_id = li.a.attrs["href"].replace("#", "")
             title = li.a.text
 
-            tab_blocks = text_to_blocks(
-                div_content.find_all("div", {"id": tab_id}, limit=1)[0]
-            )
+            tab_divs = div_content.find_all(
+                "div", {"id": tab_id}, limit=1) if div_content else []
+            if not tab_divs:
+                continue
+            tab_blocks = text_to_blocks(tab_divs[0])
 
             tab_structure.append(
                 {"id": tab_id, "title": title, "content": tab_blocks})
@@ -171,11 +174,11 @@ def convert_accordion(soup):
 
         panels_structure = []
         for panel in panels:
-            panel_id = (
-                panel.find_all("div", attrs={"class": "panel-heading"})[0]
-                .attrs["id"]
-                .split("-heading")[0]
-            )
+            heading = panel.find_all("div", attrs={"class": "panel-heading"})
+            if heading and heading[0].attrs.get("id"):
+                panel_id = heading[0].attrs["id"].split("-heading")[0]
+            else:
+                panel_id = nanoid()
             panel_title = panel.find_all(
                 "h4", attrs={"class": "panel-title"})[0].text
 
@@ -450,10 +453,11 @@ def table_to_table_block(node, plaintext):
     tbody = None
     thead = None
 
-    for child in node["children"]:
-        if child["type"] == "tbody":
+    for child in node.get("children", []):
+        child_type = child.get("type")
+        if child_type == "tbody":
             tbody = child
-        elif child["type"] == "thead":
+        elif child_type == "thead":
             thead = child
 
     for theadrow in (thead or {}).get("children", []):
@@ -461,6 +465,8 @@ def table_to_table_block(node, plaintext):
         block["table"]["rows"].append(row)
 
         for child in theadrow.get("children", []):
+            if "children" not in child:
+                continue
             cell = {"key": nanoid()}
             cell["value"] = child["children"]
             cell["type"] = "header"
@@ -471,6 +477,8 @@ def table_to_table_block(node, plaintext):
         block["table"]["rows"].append(row)
 
         for child in tbodyrow.get("children", []):
+            if "children" not in child:
+                continue
             cell = {"key": nanoid()}
             cell["value"] = child["children"]
             cell["type"] = "data"
@@ -543,7 +551,7 @@ def extract_text(slate_node):
         e = document_fromstring(html)
         text = e.text_content()
         return text
-    except AttributeError:
+    except (AttributeError, etree.ParserError):
         return ""
 
 
