@@ -248,6 +248,8 @@ def style_to_object(text):
     out = {}
 
     for pair in [x.strip() for x in text.split(";") if x.strip()]:
+        if ":" not in pair:
+            continue
         k, v = pair.split(":", 1)
         out[k.strip()] = v.strip()
 
@@ -517,7 +519,10 @@ def tostr(s):
 def text_to_slate(text: str):
     # first we cleanup the broken html
     e = lxml.html.document_fromstring(text)
-    children = e.find("body").getchildren()
+    body = e.find("body")
+    if body is None:
+        return []
+    children = body.getchildren()
     text = "".join(tostr(lxml.html.tostring(child)) for child in children)
     return HTML2Slate().to_slate(text)
 

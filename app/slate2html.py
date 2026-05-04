@@ -4,6 +4,7 @@ from copy import deepcopy
 
 from lxml.html import builder as E
 from lxml.html import tostring
+from lxml.html import HtmlElement
 
 from .config import ACCEPTED_TAGS
 
@@ -165,7 +166,24 @@ class Slate2HTML(object):
         _type = element["type"].upper()
         if _type == "VOLTOBLOCK":
             return []  # TODO: finish this. Right now it's only used in the plone4>plone6 migration
-        el = getattr(E, _type)
+        el = getattr(E, _type, None)
+        if el is None:
+            # Tag not in lxml.html.builder (e.g. VIDEO, AUDIO)
+            def el(*children, **attrs):
+                node = HtmlElement()
+                node.tag = _type.lower()
+                for k, v in attrs.items():
+                    node.set(k, v)
+                for child in children:
+                    if isinstance(child, str):
+                        if len(node) == 0:
+                            node.text = (node.text or '') + child
+                        else:
+                            last = node[-1]
+                            last.tail = (last.tail or '') + child
+                    else:
+                        node.append(child)
+                return node
 
         children = []
         for child in element["children"]:
