@@ -376,6 +376,32 @@ def has_volto_blocks(children):
             return True
 
 
+def is_layout_table(node):
+    """Return True for a table used purely for layout.
+
+    Classic Plone pages use single-row, headerless tables to place text next
+    to an image. Those should become a columnsBlock (with the image extracted
+    as a block) instead of a slateTable. Real data tables have a header or
+    more than one row.
+    """
+    rows = 0
+    has_header = False
+    has_image = False
+
+    for child, _ in iterate_children(node.get("children", [])):
+        if not isinstance(child, dict):
+            continue
+        child_type = child.get("type")
+        if child_type in ("th", "thead"):
+            has_header = True
+        elif child_type == "tr":
+            rows += 1
+        elif child_type == "img":
+            has_image = True
+
+    return not has_header and rows == 1 and has_image
+
+
 def table_to_columns_block(node):
     blocks = []
 
@@ -562,8 +588,8 @@ def convert_volto_block(block, node, plaintext, parent=None):
     if node_type == "voltoblock":
         return node["data"]
 
-    elif node_type == "table":  # don't extract anything from tables (yet)
-        if has_volto_blocks(node["children"]):
+    elif node_type == "table":
+        if has_volto_blocks(node["children"]) or is_layout_table(node):
             return table_to_columns_block(node)
 
         return table_to_table_block(node, plaintext)
