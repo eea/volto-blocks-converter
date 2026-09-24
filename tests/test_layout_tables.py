@@ -71,3 +71,21 @@ def test_single_row_table_without_image_stays_slate_table():
 
     assert "slateTable" in blocks
     assert "columnsBlock" not in blocks
+
+
+def test_images_inside_columns_have_no_float():
+    html = (
+        "<table><tbody><tr>"
+        "<td><p>text</p></td>"
+        '<td><img src="http://x.test/a.jpg" style="float: right;"></td>'
+        "</tr></tbody></table>"
+    )
+
+    blocks = _blocks_by_type(html)
+
+    assert "columnsBlock" in blocks
+    raw = json.dumps(blocks["columnsBlock"])
+    assert '"@type": "image"' in raw
+    # the image fills its column, so the float is cleared
+    assert '"align": "right"' not in raw
+    assert '"align": ""' in raw

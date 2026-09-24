@@ -425,6 +425,9 @@ def table_to_columns_block(node):
             colblocks_layout = []
 
             for uid, block in convert_slate_to_blocks(cell["children"]):
+                if block.get("@type") == "image":
+                    # An image fills its column; keeping a float would shrink it.
+                    block = {**block, "align": ""}
                 colblocks[uid] = block
                 colblocks_layout.append(uid)
 
