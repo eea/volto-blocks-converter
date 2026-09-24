@@ -376,6 +376,32 @@ def has_volto_blocks(children):
             return True
 
 
+def is_layout_table(node):
+    """Return True for a table used purely for layout.
+
+    Classic Plone pages use single-row, headerless tables to place text next
+    to an image. Those should become a columnsBlock (with the image extracted
+    as a block) instead of a slateTable. Real data tables have a header or
+    more than one row.
+    """
+    rows = 0
+    has_header = False
+    has_image = False
+
+    for child, _ in iterate_children(node.get("children", [])):
+        if not isinstance(child, dict):
+            continue
+        child_type = child.get("type")
+        if child_type in ("th", "thead"):
+            has_header = True
+        elif child_type == "tr":
+            rows += 1
+        elif child_type == "img":
+            has_image = True
+
+    return not has_header and rows == 1 and has_image
+
+
 def table_to_columns_block(node):
     blocks = []
 
@@ -399,6 +425,9 @@ def table_to_columns_block(node):
             colblocks_layout = []
 
             for uid, block in convert_slate_to_blocks(cell["children"]):
+                if block.get("@type") == "image":
+                    # An image fills its column; keeping a float would shrink it.
+                    block = {**block, "align": ""}
                 colblocks[uid] = block
                 colblocks_layout.append(uid)
 
@@ -479,6 +508,79 @@ def table_to_table_block(node, plaintext):
     return block
 
 
+def make_image_block(node, parent=None):
+    """Build a Volto image block from a Slate img node."""
+    res = {
+        "@type": "image",
+        "url": node.get("url", "").split("/@@images", 1)[0],
+        "align": node.get("align", ""),
+        "title": node.get("title", ""),
+        "alt": node.get("alt", ""),
+    }
+
+    if parent and parent.get("type") == "link":
+        href = parent.get("data", {}).get("url", "")
+        if href.startswith("resolveuid"):
+            href = f"../{href}"
+        if "resolveuid" in href:
+            href = [{"@id": href}]
+        res["href"] = href
+
+    return res
+
+
+def extract_images_from_slate_node(slate_node):
+    """Return (cleaned_node, extracted_images).
+
+    Recursively removes ``type: img`` nodes from a Slate value tree and
+    returns the tree without images together with a list of image-node dicts.
+    """
+    images = []
+    cleaned = _extract_images_recursive(slate_node, images)
+    return cleaned, images
+
+
+def _extract_images_recursive(node, images):
+    if isinstance(node, list):
+        result = []
+        for child in node:
+            cleaned = _extract_images_recursive(child, images)
+            if cleaned is None:
+                continue
+            if isinstance(cleaned, list):
+                result.extend(cleaned)
+            else:
+                result.append(cleaned)
+        return result
+
+    if isinstance(node, dict):
+        if node.get("type") == "img":
+            images.append(node)
+            return None
+
+        cleaned = dict(node)
+        if "children" in cleaned:
+            cleaned["children"] = _extract_images_recursive(
+                cleaned["children"], images
+            )
+        return cleaned
+
+    return node
+
+
+def is_empty_slate_node(node):
+    """Return True if a Slate node has no visible text."""
+    if not isinstance(node, dict):
+        return False
+    text = node.get("text")
+    if text is not None:
+        return not str(text).strip()
+    children = node.get("children", [])
+    if not children:
+        return True
+    return all(is_empty_slate_node(child) for child in children)
+
+
 def convert_volto_block(block, node, plaintext, parent=None):
     # if there's any image in the paragraph, it will be replaced only by the
     # image block. This needs to be treated carefully, if we have inline aligned
@@ -489,8 +591,8 @@ def convert_volto_block(block, node, plaintext, parent=None):
     if node_type == "voltoblock":
         return node["data"]
 
-    elif node_type == "table":  # don't extract anything from tables (yet)
-        if has_volto_blocks(node["children"]):
+    elif node_type == "table":
+        if has_volto_blocks(node["children"]) or is_layout_table(node):
             return table_to_columns_block(node)
 
         return table_to_table_block(node, plaintext)
@@ -499,29 +601,7 @@ def convert_volto_block(block, node, plaintext, parent=None):
         if (
             block is node or plaintext == ""
         ):  # convert to a volto block only on top level element or if the block has no text
-            res = {
-                "@type": "image",
-                "url": node.get("url", "").split("/@@images", 1)[0],
-                "align": node.get("align", ""),
-                "title": node.get("title", ""),
-                "alt": node.get("alt", ""),
-            }
-
-            # if isinstance(parent, list):
-            #     __import__("pdb").set_trace()
-            if parent and parent.get("type") == "link":
-                href = parent.get("data", {}).get("url", "")
-                if href.startswith("resolveuid"):
-                    href = f"../{href}"
-                if "resolveuid" in href:
-                    href = [
-                        {
-                            "@id": href,
-                        }
-                    ]
-                res["href"] = href
-
-            return res
+            return make_image_block(node, parent)
 
     elif node_type == "video":
         return {
@@ -556,17 +636,28 @@ def convert_block(slate_node, parent=None):
     if volto_block:
         return volto_block
 
-    if slate_node.get("children"):
-        children = iterate_children(slate_node["children"])
-        for child, parent in children:
-            # print('child', child)
-
-            volto_block = convert_volto_block(
-                slate_node, child, plaintext, parent=parent
-            )
-
-            if volto_block:
-                return volto_block
+    # Extract inline Slate images into standalone image blocks.  Any remaining
+    # text is kept in a trailing slate block.
+    cleaned_node, images = extract_images_from_slate_node(slate_node)
+    if images:
+        blocks = []
+        for img in images:
+            blocks.append([make_uid(), make_image_block(img, parent=None)])
+        if cleaned_node and not is_empty_slate_node(cleaned_node):
+            if cleaned_node.get("type") not in VALID_TOPLEVEL_SLATE_TYPES:
+                cleaned_node = {
+                    "type": DEFAULT_BLOCK_TYPE,
+                    "children": [{"text": ""}, cleaned_node, {"text": ""}],
+                }
+            blocks.append([
+                make_uid(),
+                {
+                    "@type": "slate",
+                    "value": [cleaned_node],
+                    "plaintext": extract_text(cleaned_node),
+                },
+            ])
+        return blocks
 
     if slate_node.get("type") not in VALID_TOPLEVEL_SLATE_TYPES:
         slate_node = {
