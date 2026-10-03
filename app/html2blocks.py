@@ -376,13 +376,20 @@ def has_volto_blocks(children):
             return True
 
 
+LAYOUT_TABLE_CLASSES = {"invisible-grid", "layout-table"}
+
+
 def is_layout_table(node):
     """Return True for a table used purely for layout.
 
-    Classic Plone pages use single-row, headerless tables to place text next
-    to an image. Those should become a columnsBlock (with the image extracted
-    as a block) instead of a slateTable. Real data tables have a header or
-    more than one row.
+    Two shapes qualify, both headerless:
+
+    * a table explicitly marked as a layout grid (``invisible-grid``); it may
+      span several rows, and each table column collects its cells top to
+      bottom, and
+    * the classic single-row table that places an image beside text.
+
+    Real data tables have a header, or are multi-row and unmarked.
     """
     rows = 0
     has_header = False
@@ -399,61 +406,69 @@ def is_layout_table(node):
         elif child_type == "img":
             has_image = True
 
-    return not has_header and rows == 1 and has_image
+    if has_header:
+        return False
+
+    if set(node.get("class") or []) & LAYOUT_TABLE_CLASSES:
+        return True
+
+    return rows == 1 and has_image
 
 
 def table_to_columns_block(node):
-    blocks = []
+    """Convert a layout table into a single columnsBlock.
 
-    def row_to_columns_block(row):
-        children = row["children"]
-        columns_storage = {
-            "blocks": {},  # these are the columns
-            "blocks_layout": {"items": []},
-        }
-        nr = int(12 / len(children))
+    Each table column becomes one columnsBlock column, collecting that
+    column's cells top to bottom, so a table with images in the first row and
+    captions in the second yields one column per image/caption pair.
+    """
+    rows = []
+    for child in node["children"]:
+        if child.get("type") == "tbody":
+            rows.extend(row for row in child["children"] if row.get("type") == "tr")
+        elif child.get("type") == "tr":
+            rows.append(child)
 
-        blockdata = {
-            "@type": "columnsBlock",
-            "data": columns_storage,  # stores columns as "blocks"
-            "gridSize": 12,
-            "gridCols": [COL_MAPPING[nr] for _ in children],
-        }
+    if not rows:
+        return []
 
-        for cell in children:
-            colblocks = {}
-            colblocks_layout = []
+    column_count = max(len(row["children"]) for row in rows)
+    grid_col = COL_MAPPING.get(int(12 / column_count), "oneThird")
 
-            for uid, block in convert_slate_to_blocks(cell["children"]):
+    columns_storage = {
+        "blocks": {},  # these are the columns
+        "blocks_layout": {"items": []},
+    }
+
+    for index in range(column_count):
+        colblocks = {}
+        colblocks_layout = []
+
+        for row in rows:
+            cells = row["children"]
+            if index >= len(cells):
+                continue
+            for uid, block in convert_slate_to_blocks(cells[index]["children"]):
                 if block.get("@type") == "image":
                     # An image fills its column; keeping a float would shrink it.
                     block = {**block, "align": ""}
                 colblocks[uid] = block
                 colblocks_layout.append(uid)
 
-            uid = make_uid()
-            columns_storage["blocks"][uid] = {
-                "blocks": colblocks,
-                "blocks_layout": {"items": colblocks_layout},
-            }
-            columns_storage["blocks_layout"]["items"].append(uid)
+        uid = make_uid()
+        columns_storage["blocks"][uid] = {
+            "blocks": colblocks,
+            "blocks_layout": {"items": colblocks_layout},
+        }
+        columns_storage["blocks_layout"]["items"].append(uid)
 
-        blocks.append([make_uid(), blockdata])
-
-    def body_to_columns(body):
-        for child in body["children"]:
-            row_to_columns_block(child)
-
-    for child in node["children"]:
-        if child.get("type") == "tbody":
-            body_to_columns(child)
-            continue
-
-        if child.get("type") == "tr":
-            row_to_columns_block(child)
-            continue
-
-    return blocks
+    blockdata = {
+        "@type": "columnsBlock",
+        "data": columns_storage,  # stores columns as "blocks"
+        "gridSize": 12,
+        "gridCols": [grid_col for _ in range(column_count)],
+    }
+    return [[make_uid(), blockdata]]
 
 
 COL_MAPPING = {
