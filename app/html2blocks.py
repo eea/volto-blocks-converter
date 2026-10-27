@@ -5,6 +5,7 @@ from copy import deepcopy
 from uuid import uuid4
 
 from bs4 import BeautifulSoup
+from lxml import etree
 from lxml.html import document_fromstring
 
 from app.config import DEFAULT_BLOCK_TYPE, VALID_TOPLEVEL_SLATE_TYPES
@@ -20,16 +21,26 @@ def make_uid():
     return str(uuid4())
 
 
+def _rewrite_content_keys(content, prefix):
+    """Replace random make_uid() keys in a tab/panel's inner content list with
+    deterministic position-based keys. Returns a new list of (uid, block) pairs.
+    """
+    return [("%s-block%d" % (prefix, i), block) for i, (_, block) in enumerate(content)]
+
+
 def make_tab_block(tabs):
-    block_ids = [make_uid() for _ in tabs]
+    # Deterministic position-based IDs so the same input produces the same
+    # output across runs.
+    block_ids = ["tab%d" % i for i in range(len(tabs))]
     blocks = {}
 
     for i, tab in enumerate(tabs):
+        content = _rewrite_content_keys(tab["content"], block_ids[i])
         blocks[block_ids[i]] = {
             "@type": "tab",
             "title": tab["title"],
-            "blocks": dict(tab["content"]),
-            "blocks_layout": {"items": [b[0] for b in tab["content"]]},
+            "blocks": dict(content),
+            "blocks_layout": {"items": [b[0] for b in content]},
         }
 
     data = {
@@ -40,16 +51,19 @@ def make_tab_block(tabs):
 
 
 def make_accordion_block(panels):
-    block_ids = [make_uid() for _ in panels]
+    # Deterministic position-based IDs so the same input produces the same
+    # output across runs.
+    block_ids = ["panel%d" % i for i in range(len(panels))]
 
     blocks = {}
 
     for i, panel in enumerate(panels):
+        content = _rewrite_content_keys(panel["content"], block_ids[i])
         blocks[block_ids[i]] = {
             "@type": "accordionPanel",
             "title": panel["title"],
-            "blocks": dict(panel["content"]),
-            "blocks_layout": {"items": [b[0] for b in panel["content"]]},
+            "blocks": dict(content),
+            "blocks_layout": {"items": [b[0] for b in content]},
         }
 
     data = {
@@ -94,9 +108,11 @@ def convert_tabs(soup):
             tab_id = li.a.attrs["href"].replace("#", "")
             title = li.a.text
 
-            tab_blocks = text_to_blocks(
-                div_content.find_all("div", {"id": tab_id}, limit=1)[0]
-            )
+            tab_divs = div_content.find_all(
+                "div", {"id": tab_id}, limit=1) if div_content else []
+            if not tab_divs:
+                continue
+            tab_blocks = text_to_blocks(tab_divs[0])
 
             tab_structure.append(
                 {"id": tab_id, "title": title, "content": tab_blocks})
@@ -171,11 +187,11 @@ def convert_accordion(soup):
 
         panels_structure = []
         for panel in panels:
-            panel_id = (
-                panel.find_all("div", attrs={"class": "panel-heading"})[0]
-                .attrs["id"]
-                .split("-heading")[0]
-            )
+            heading = panel.find_all("div", attrs={"class": "panel-heading"})
+            if heading and heading[0].attrs.get("id"):
+                panel_id = heading[0].attrs["id"].split("-heading")[0]
+            else:
+                panel_id = nanoid()
             panel_title = panel.find_all(
                 "h4", attrs={"class": "panel-title"})[0].text
 
@@ -378,8 +394,11 @@ def has_volto_blocks(children):
 
 def table_to_columns_block(node):
     blocks = []
+    row_counter = [0]  # mutable so nested function can increment
 
     def row_to_columns_block(row):
+        row_idx = row_counter[0]
+        row_counter[0] += 1
         children = row["children"]
         columns_storage = {
             "blocks": {},  # these are the columns
@@ -394,22 +413,27 @@ def table_to_columns_block(node):
             "gridCols": [COL_MAPPING[nr] for _ in children],
         }
 
-        for cell in children:
+        for col_idx, cell in enumerate(children):
+            col_uid = "row%d-col%d" % (row_idx, col_idx)
             colblocks = {}
             colblocks_layout = []
 
-            for uid, block in convert_slate_to_blocks(cell["children"]):
-                colblocks[uid] = block
-                colblocks_layout.append(uid)
+            for slate_idx, (_, block) in enumerate(convert_slate_to_blocks(cell["children"])):
+                inner_uid = "%s-block%d" % (col_uid, slate_idx)
+                colblocks[inner_uid] = block
+                colblocks_layout.append(inner_uid)
 
-            uid = make_uid()
-            columns_storage["blocks"][uid] = {
+            columns_storage["blocks"][col_uid] = {
                 "blocks": colblocks,
                 "blocks_layout": {"items": colblocks_layout},
             }
-            columns_storage["blocks_layout"]["items"].append(uid)
+            columns_storage["blocks_layout"]["items"].append(col_uid)
 
-        blocks.append([make_uid(), blockdata])
+        # Outer block UID gets replaced by html_to_blocks (utils.py) with
+        # uuid5 based on (object UID, index), so make_uid() is fine here —
+        # but use a stable placeholder to avoid spurious diffs in case the
+        # caller doesn't replace it.
+        blocks.append(["columns%d" % row_idx, blockdata])
 
     def body_to_columns(body):
         for child in body["children"]:
@@ -450,31 +474,43 @@ def table_to_table_block(node, plaintext):
     tbody = None
     thead = None
 
-    for child in node["children"]:
-        if child["type"] == "tbody":
+    for child in node.get("children", []):
+        child_type = child.get("type")
+        if child_type == "tbody":
             tbody = child
-        elif child["type"] == "thead":
+        elif child_type == "thead":
             thead = child
 
+    # Use position-based deterministic keys so the same input produces the
+    # same output across runs (otherwise change-detection in callers like
+    # collective.exportimport pipelines flag every table-containing item as
+    # changed on each run).
+    row_index = 0
     for theadrow in (thead or {}).get("children", []):
-        row = {"cells": [], "key": nanoid()}
+        row = {"cells": [], "key": "row%d" % row_index}
         block["table"]["rows"].append(row)
 
-        for child in theadrow.get("children", []):
-            cell = {"key": nanoid()}
+        for col_index, child in enumerate(theadrow.get("children", [])):
+            if "children" not in child:
+                continue
+            cell = {"key": "row%d-cell%d" % (row_index, col_index)}
             cell["value"] = child["children"]
             cell["type"] = "header"
             row["cells"].append(cell)
+        row_index += 1
 
     for tbodyrow in (tbody or {}).get("children", []):
-        row = {"cells": [], "key": nanoid()}
+        row = {"cells": [], "key": "row%d" % row_index}
         block["table"]["rows"].append(row)
 
-        for child in tbodyrow.get("children", []):
-            cell = {"key": nanoid()}
+        for col_index, child in enumerate(tbodyrow.get("children", [])):
+            if "children" not in child:
+                continue
+            cell = {"key": "row%d-cell%d" % (row_index, col_index)}
             cell["value"] = child["children"]
             cell["type"] = "data"
             row["cells"].append(cell)
+        row_index += 1
 
     return block
 
@@ -543,7 +579,7 @@ def extract_text(slate_node):
         e = document_fromstring(html)
         text = e.text_content()
         return text
-    except AttributeError:
+    except (AttributeError, etree.ParserError):
         return ""
 
 
