@@ -305,7 +305,14 @@ def serialize_teaser(block_data):
     }
 
     item_model = block_data.pop("itemModel", None)
-    if item_model:
+    # Volto leaves a partial itemModel - e.g. {"hasDate": false, "styles": {...}}
+    # with no "@type" - on a teaser that was added but never given a card.
+    # serialize_itemModel needs @type to tag the model div, and the itemModel is
+    # already carried verbatim inside this teaser's own data-volto-block (built
+    # above, before this pop), so the model div is optional: skipping it lets the
+    # partial itemModel round-trip through html2blocks unchanged instead of
+    # inventing an @type that was never in the content.
+    if item_model and item_model.get("@type"):
         model_div = serialize_itemModel(item_model)
         children.append(model_div)
 
